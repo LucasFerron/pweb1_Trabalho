@@ -15,7 +15,7 @@
     <h2>Bem vindo ao admin do blog</h2>
 
     <a href="./usuario/UsuarioList.php" class="btn btn-success">Usuário</a>
-    <a href="./post/ExercicioList.php" class="btn btn-primary">Exercícios</a>
+    <a href="./exercicios/ExercicioList.php" class="btn btn-primary">Exercícios</a>
 </div>
 
 <?php
