@@ -1,10 +1,10 @@
 <?php
     include "../db.class.php";
-
     include_once "../header.php";
 
-
-    $db = new db('usuario');
+    $db = new db('exercicios');
+    $dbCategoria = new db('categoria');
+    $categorias = $dbCategoria->all();
     $data = null;
     $errors = [];
     $success = '';
@@ -13,42 +13,31 @@
 
             $data = (object) $_POST;
 
-            if(empty(trim($_POST['nome']))){
-                $errors[] = "<li>O nome é Obrigatório.</li>";
+            if(empty(trim($_POST['titulo']))){
+                $errors[] = "<li>O titulo é Obrigatório.</li>";
             }
-            if(empty(trim($_POST['email']))){
-                $errors[] = "<li>O email é Obrigatório.</li>";
+            if(empty(trim($_POST['descricao']))){
+                $errors[] = "<li>A descricao é Obrigatória.</li>";
             }
-            if(empty(trim($_POST['cpf']))){
-                $errors[] = "<li>O cpf é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['telefone']))){
-                $errors[] = "<li>O telefone é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['senha']))){
-                $errors[] = "<li>A senha é Obrigatória.</li>";
+            if(empty(trim($_POST['categoria_id']))){
+                $errors[] = "<li>A categoria é Obrigatória.</li>";
             }
 
 
             if (empty(($errors))){
                 try {
-                    if($_POST['senha'] === $_POST['c_senha']){
-
-                        $_POST['senha'] = password_hash($_POST['senha'], PASSWORD_BCRYPT);
-                        unset($_POST['c_senha']);
-
+                    if(empty($_POST['id'])){
                         $db->store($_POST);
                         $success = "Registro criado com sucesso!";
-                    
+                    } else {
+                        $db->update($_POST);
+                        $success = "Registro atualizado com sucesso!";
+                    }
                     echo "<script>
                         setTimeout(
-                            ()=> window.location.href = 'home.php', 1000
+                            ()=> window.location.href = 'ExercicioList.php', 1000
                         )
                     </script>";
-                } else {
-                    $errors[] = "<li>As senhas não conferem. Tente novamente.</li>";
-                }
-
                 } catch(Exception $e){
                     $errors[] = "Erro ao salvar: " . $e->getMessage();
                 }
@@ -70,8 +59,6 @@
 
     ?>
 
-
-                
                 <!--Sucesso-->
                 <?php if(!empty($success)) {?>
                     <div class="alert alert-success">
@@ -93,57 +80,61 @@
                     </div>
                 <?php } ?>
 
-                <h3>Formulário Usuário</h3>
+                <h3>Formulário Exercícios</h3>
                 <!--http://localhost/php/site/admin/UsuarioForm.php-->
                 <form action="" method="post">
                     <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="" class="form-label">Nome</label>
-                            <input type="text" name="nome" value="<?php echo $data->nome ?? '' ?>" class="form-control">
+                            <label for="" class="form-label">Titulo</label>
+                            <input type="text" name="titulo" value="<?php echo $data->titulo ?? '' ?>" class="form-control">
                         </div>
-
                         <div class="col-md-6">
-                            <label for="" class="form-label">Telefone</label>
-                            <input type="text" name="telefone" value="<?= $data->telefone ?? '' ?>" class="form-control">
+                            <label for="" class="form-label">Categoria</label>
+                            <select name="categoria_id" class="select-control">
+                                <?php
+                                foreach($categorias as $categoria) {
+                                ?>
+                                    <option value="<?= $categoria->id ?>">
+                                        <?= $categoria->nome ?>
+                                    </option>
+                                <?php
+                                }   
+                                ?>
+                            </select>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="" class="form-label">Email</label>
-                            <input type="email" name="email" value="<?= $data->email ?? '' ?>" class="form-control">
+                            <label for="" class="form-label">Data de Publicação</label>
+                            <input type="date" name="data_publicacao" value="<?= $data->data_publicacao ?? '' ?>" class="form-control">
                         </div>
                         
                         <div class="col-md-6">
-                            <label for="" class="form-label">CPF</label>
-                            <input type="text" name="cpf" value="<?= $data->cpf ?? '' ?>" class="form-control">
-                        </div>
+                            <label for="" class="form-label">Status</label>
+                            <select name="status" class="select-control">
+                                <option value="publicado">Publicado</option>
+                                <option value="nao_publicado">Não Publicado</option>
+                            </select>
+                        </div>  
                     </div>
-
-                    <div class="row">                        
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Senha</label>
-                            <input type="password" name="senha" value="<?= $data->senha ?? '' ?>" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Confirmar Senha</label>
-                            <input type="password" name="c_senha" class="form-control">
-                        </div>
+                    <div class="col-md-12">
+                        <label for="" class="form-label">Descrição</label>
+                        <textarea name="descricao" class="form-control" value="<?= $data->descricao ?? '' ?>"></textarea>
                     </div>
 
                     <div class="row">
                         <div class="col mt-4">
                             <button type="submit" class="btn btn-primary">
-                                Salvar
+                                <?= !empty($_GET['id']) ? "Editar" : "Salvar"?>
                             </button>
-                            <a href="./login.php" class="btn btn-secondary">Voltar</a>
+                            <a href="./ExercicioList.php" class="btn btn-secondary">Voltar</a>
                         </div>
                     </div>
                 </form>
+            </div>
 
-    <?php
-    
+<?php
     include_once "../footer.php";
-    
-    ?>
+?>

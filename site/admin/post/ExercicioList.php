@@ -1,8 +1,9 @@
 <?php
     include "../db.class.php";
-    include_once "../header.php"; 
 
-        $db = new db('usuario');
+    include_once "../header.php";
+
+        $db = new db('exercicios');
 
         if(!empty($_GET['id'])){
             $db->destroy($_GET['id']);
@@ -16,21 +17,17 @@
 
     ?>
 
-    <body>
 
-        <div class="container mt-5">
-            <div class="row">
-                <h3>Listagem Usuário</h3>
-                <!--http://localhost/php/site/admin/UsuarioList.php-->
+                <h3>Listagem Exercicios</h3>
+                <!--http://localhost/php/site/admin/PostList.php-->
 
-                <form action="./UsuarioList.php" method="post">
+                <form action="./ExercicioList.php" method="post">
 
                     <div class="row">
                         <div class="col-md-2">
                             <select name="tipo" class="form-select">
-                                <option value="nome">Nome</option>
-                                <option value="nome">CPF</option>
-                                <option value="nome">Telefone</option>
+                                <option value="titulo">Titulo</option>
+                                <option value="status">Status</option>
                             </select>
                         </div>
 
@@ -42,7 +39,7 @@
                     <div class="row">
                         <div class="col mt-4">
                             <button type="submit" class="btn btn-primary">Buscar</button>
-                            <a href="./UsuarioForm.php" class="btn btn-secondary">Cadastrar</a>
+                            <a href="./ExercicioForm.php" class="btn btn-secondary">Cadastrar</a>
                         </div>
                     </div>
                 </form>
@@ -52,30 +49,34 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">CPF</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">Email</th>
+                        <th scope="col">Titulo</th>
+                        <th scope="col">Data de Publicação</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Ação</th>
                         <th scope="col">Ação</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
+                        $dbCategoria = new $db('categoria');
                         foreach($dados as $item) {
+                            $data_publicacao = date('d/m/Y', strtotime($item->data_publicacao));
+                            $categoria = $dbCategoria->find($item->categoria_id);
                             echo"
                             <tr>
                                 <th scope='row'>$item->id</th>
+                                <td>$item->titulo</td>
+                                <td>$data_publicacao</td>
+                                <td>$item->status</td>
                                 <td>$item->nome</td>
-                                <td>$item->cpf</td>
-                                <td>$item->telefone</td>
-                                <td>$item->email</td>
                                 <td>
-                                    <a href='./UsuarioForm.php?id=$item->id'>Editar</a>
+                                    <a href='./ExercicioForm.php?id=$item->id'>Editar</a>
                                 </td>
                                 <td>
                                     <a 
                                         onclick='return confirm(\"Deseja Excluir?\")'
-                                        href='./UsuarioList.php?id=$item->id'>Exluir
+                                        href='./ExercicioList.php?id=$item->id'>Exluir
                                     </a>
                                 </td>
                             </tr>
@@ -85,10 +86,6 @@
                 </tbody>
                 </table>
             </div>
-
-            
-    <?php
-    
+<?php
     include_once "../footer.php";
-    
-    ?>
+?>

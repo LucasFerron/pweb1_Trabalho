@@ -25,6 +25,9 @@
             if(empty(trim($_POST['telefone']))){
                 $errors[] = "<li>O telefone é Obrigatório.</li>";
             }
+            if(empty(trim($_POST['login']))){
+                $errors[] = "<li>O login é Obrigatório.</li>";
+            }
             if(empty(trim($_POST['senha']))){
                 $errors[] = "<li>A senha é Obrigatória.</li>";
             }
@@ -93,7 +96,7 @@
                     </div>
                 <?php } ?>
 
-                <h3>Formulário Usuário</h3>
+                <h3>Login</h3>
                 <!--http://localhost/php/site/admin/UsuarioForm.php-->
                 <form action="" method="post">
                     <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
@@ -121,12 +124,17 @@
                         </div>
                     </div>
 
-                    <div class="row">                        
-                        <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="" class="form-label">Login</label>
+                            <input type="text" name="login" value="<?= $data->login ?? '' ?>" class="form-control">
+                        </div>
+                        
+                        <div class="col-md-4">
                             <label for="" class="form-label">Senha</label>
                             <input type="password" name="senha" value="<?= $data->senha ?? '' ?>" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="" class="form-label">Confirmar Senha</label>
                             <input type="password" name="c_senha" class="form-control">
                         </div>

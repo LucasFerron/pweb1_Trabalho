@@ -1,13 +1,12 @@
 <?php
-class db
-{
+
+class db {
 
     private $host = "localhost";
     private $user = "root";
     private $password = "";
     private $port = "3306";
-    private $dbname = "db_pweb1_2025_1";
-
+    private $dbname ="bancotrabalhopweb1";
     private $table_name;
 
     public function __construct($table_name){
@@ -15,10 +14,9 @@ class db
         return $this->conn();
     }
 
-    function conn()
-    {
+    function conn(){
 
-        try {
+        try{
             $conn = new PDO(
                 "mysql:host=$this->host;dbname=$this->dbname",
                 $this->user,
@@ -26,111 +24,125 @@ class db
                 [
                     PDO::ATTR_ERRMODE,
                     PDO::ERRMODE_EXCEPTION,
-                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+                    PDO::MYSQL_ATTR_INIT_COMMAND =>"SET NAMES utf8"
                 ]
             );
 
             return $conn;
 
-        } catch (PDOException $e) {
-            echo "Erro: " . $e->getMessage();
+        } catch(PDOException $e){
+            echo "Erro: ". $e->getMessage();
         }
     }
-    public function all()
-    {
-        $conn = $this->conn(); //Cria o conn
 
-        $sql = "SELECT * FROM usuario"; //retorna todos os registros
-        
-        $st =$conn->prepare($sql);
+
+
+    public function all(){
+        $conn = $this->conn(); 
+
+        $sql = "SELECT * FROM $this->table_name";
+
+        $st = $conn->prepare( $sql);
         $st->execute();
 
-        return $st->fetchAll(PDO::FETCH_CLASS); 
+        return $st->fetchAll(PDO::FETCH_CLASS);
     }
+
+
+
     public function store($dados){
         unset($dados['id']);
-        $conn = $this->conn();
+        $conn = $this->conn(); 
 
+        
         $sql = "INSERT INTO $this->table_name (";
         $flag = 0;
         $arrayDados = [];
-        
-        foreach($dados as $campo =>$valor){
+        foreach($dados as $campo => $valor){
             if($flag ==0){
                 $sql .= "$campo";
-            }else{
-                $sql .= ",$campo";
+            } else {
+                $sql .= ", $campo";
             }
             $flag = 1;
         }
+
         $sql .=") VALUES (";
+
         $flag = 0;
-        foreach($dados as $campo =>$valor){
+        foreach($dados as $campo => $valor){
             if($flag ==0){
-                $sql .= " ?";
-            }else{
+                $sql .= "?";
+            } else {
                 $sql .= ", ?";
             }
             $flag = 1;
             $arrayDados[] = $valor;
         }
 
-        $sql .=") ";                   
-        
-        $st =$conn->prepare( $sql);
-        $st->execute( $arrayDados);
+        $sql .=") ";
+
+        $st = $conn->prepare(query: $sql);
+        $st->execute($arrayDados);
     }
+
+
 
     public function update($dados){
         $id = $dados['id'];
-       // var_dump($dados);
-      //  exit;
-        $conn = $this->conn();
+        $conn = $this->conn(); 
 
         $sql = "UPDATE $this->table_name SET ";
         $flag = 0;
         $arrayDados = [];
 
-        foreach($dados as $campo =>$valor){
-            if($flag ==0){
+        foreach($dados as $campo => $valor){
+            if($flag == 0){
                 $sql .= "$campo = ?";
-            }else{
+            } else {
                 $sql .= ", $campo = ?";
             }
             $flag = 1;
             $arrayDados[] = $valor;
         }
 
-        $sql .= "WHERE id = $id";                   
-        
-        $st =$conn->prepare( $sql);
-        $st->execute( $arrayDados);
-    }
-    public function find($id)
-    {
-        $conn = $this->conn(); //Cria o conn
+        $sql .= "WHERE id = $id";
 
-        $sql = "SELECT * FROM usuario WHERE id = ?";
-        
-        $st =$conn->prepare($sql);
+        $st = $conn->prepare(query: $sql);
+        $st->execute($arrayDados);
+    }
+
+
+
+
+    public function find($id){
+
+        $conn = $this->conn(); 
+
+        $sql = "SELECT * FROM $this->table_name WHERE id = ?";
+
+        $st = $conn->prepare( $sql);
         $st->execute([$id]);
 
         return $st->fetchObject();
     }
+
+
+
 
     public function destroy($id){
         $conn = $this->conn();
 
         $sql = "DELETE FROM $this->table_name WHERE id = ?";
 
-        $st = $conn->prepare($sql);
+        $st = $conn->prepare( $sql);
         $st->execute([$id]);
-
-        return $st->fetchAll( PDO::FETCH_CLASS);
-
-        
     }
+
+
+
     public function search($dados){
+
         $campo = $dados['tipo'];
         $valor = $dados['valor'];
 
@@ -138,13 +150,28 @@ class db
 
         $sql = "SELECT * FROM $this->table_name WHERE $campo LIKE ?";
 
-        $st = $conn->prepare($sql);
+        $st = $conn->prepare( $sql);
         $st->execute(["%$valor%"]);
 
-        return $st->fetchAll( PDO::FETCH_CLASS);
+        return $st->fetchAll(PDO::FETCH_CLASS);
+    }
 
-        
+    public function login($dados){
+
+        $conn = $this->conn(); 
+
+        $sql = "SELECT * FROM $this->table_name WHERE name = ?";
+
+        $st = $conn->prepare( $sql);
+        $st->execute([$dados['name']]);
+
+        $result = $st->fetchObject();
+
+        if($result && password_verify($dados['senha'], $result->senha)){
+            return $result;
+        } else {
+            return "error";
+        }
     }
 
 }
-?>
