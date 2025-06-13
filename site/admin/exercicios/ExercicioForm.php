@@ -86,10 +86,10 @@
                     <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="" class="form-label">Titulo</label>
+                            <label for="" class="form-label">Nome</label>
                             <input type="text" name="titulo" value="<?php echo $data->titulo ?? '' ?>" class="form-control">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mt-5">
                             <label for="" class="form-label">Categoria</label>
                             <select name="categoria_id" class="select-control">
                                 <?php
@@ -104,20 +104,19 @@
                             </select>
                         </div>
                     </div>
-
-                    <div class="row">
+                    <div div class="row">
                         <div class="col-md-6">
-                            <label for="" class="form-label">Data de Publicação</label>
-                            <input type="date" name="data_publicacao" value="<?= $data->data_publicacao ?? '' ?>" class="form-control">
+                            <label for="" class="form-label">Equipamento</label>
+                            <input type="text" name="equipamento" value="<?php echo $data->equipamento ?? '' ?>" class="form-control">
                         </div>
-                        
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Status</label>
-                            <select name="status" class="select-control">
-                                <option value="publicado">Publicado</option>
-                                <option value="nao_publicado">Não Publicado</option>
+                        <div class="col-md-6 mt-5">
+                            <label for="" class="form-label">Nível</label>
+                            <select name="nivel"  class="select-control">
+                                <option value="1">Iniciante</option>
+                                <option value="2">Intermediário</option>
+                                <option value="3">Avançado</option>
                             </select>
-                        </div>  
+                        </div>
                     </div>
                     <div class="col-md-12">
                         <label for="" class="form-label">Descrição</label>

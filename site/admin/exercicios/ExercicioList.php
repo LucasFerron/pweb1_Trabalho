@@ -70,6 +70,7 @@
                                 <td>$data_publicacao</td>
                                 <td>$item->status</td>
                                 <td>$item->nome</td>
+                                <td>$categoria->nome</td>
                                 <td>
                                     <a href='./ExercicioForm.php?id=$item->id'>Editar</a>
                                 </td>

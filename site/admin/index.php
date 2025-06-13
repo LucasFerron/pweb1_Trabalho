@@ -12,10 +12,12 @@
     <body class="mt-5 ms-4">
     
 <div class="col">
-    <h2>Bem vindo ao admin do blog</h2>
+    <h2>Bem vindo a página de Admin do Sistema de Treinos</h2>
 
     <a href="./usuario/UsuarioList.php" class="btn btn-success">Usuário</a>
     <a href="./exercicios/ExercicioList.php" class="btn btn-primary">Exercícios</a>
+    <a href="./treino/TreinoForm.php" class="btn btn-primary">Treinos</a>
+
 </div>
 
 <?php

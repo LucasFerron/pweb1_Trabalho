@@ -4,7 +4,9 @@
     include_once "../header.php";
 
 
-    $db = new db('usuario');
+    $db = new db('treino');
+    $dbUsuario = new db('usuario');
+    $usuario = $dbUsuario->all();
     $data = null;
     $errors = [];
     $success = '';
@@ -16,38 +18,26 @@
             if(empty(trim($_POST['nome']))){
                 $errors[] = "<li>O nome é Obrigatório.</li>";
             }
-            if(empty(trim($_POST['email']))){
-                $errors[] = "<li>O email é Obrigatório.</li>";
+            if(empty(trim($_POST['descricao']))){
+                $errors[] = "<li>A descrição é Obrigatória.</li>";
             }
-            if(empty(trim($_POST['cpf']))){
-                $errors[] = "<li>O cpf é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['telefone']))){
-                $errors[] = "<li>O telefone é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['senha']))){
-                $errors[] = "<li>A senha é Obrigatória.</li>";
+            if(empty(trim($_POST['usuario_id']))){
+                $errors[] = "<li>O usuário é Obrigatório.</li>";
             }
 
 
             if (empty(($errors))){
                 try {
-                    if($_POST['senha'] === $_POST['c_senha']){
-
-                        $_POST['senha'] = password_hash($_POST['senha'], PASSWORD_BCRYPT);
-                        unset($_POST['c_senha']);
-
-                        $db->store($_POST);
-                        $success = "Registro criado com sucesso!";
+                    
+                    $db->store($_POST);
+                    $success = "Registro criado com sucesso!";
                     
                     echo "<script>
                         setTimeout(
-                            ()=> window.location.href = './home.php', 1000
+                            ()=> window.location.href = 'home.php', 1000
                         )
                     </script>";
-                } else {
-                    $errors[] = "<li>As senhas não conferem. Tente novamente.</li>";
-                }
+
 
                 } catch(Exception $e){
                     $errors[] = "Erro ao salvar: " . $e->getMessage();
@@ -93,8 +83,8 @@
                     </div>
                 <?php } ?>
 
-                <h3>Formulário Usuário</h3>
-                <!--http://localhost/php/site/admin/UsuarioForm.php-->
+                <h3>Formulário Treinos</h3>
+                <!--http://localhost/php/site/admin/TreinoForm.php-->
                 <form action="" method="post">
                     <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
                     <div class="row">
@@ -104,40 +94,32 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label for="" class="form-label">Telefone</label>
-                            <input type="text" name="telefone" value="<?= $data->telefone ?? '' ?>" class="form-control">
+                            <label for="" class="form-label">Descrição</label>
+                            <input type="text" name="descricao" value="<?= $data->descricao ?? '' ?>" class="form-control">
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Email</label>
-                            <input type="email" name="email" value="<?= $data->email ?? '' ?>" class="form-control">
+                    <div class="col-md-6">
+                            <label for="" class="form-label">Usuario</label>
+                            <select name="usuario_id" class="select-control">
+                                <?php
+                                foreach($usuario as $usuario) {
+                                ?>
+                                    <option value="<?= $usuario->id ?>">
+                                        <?= $usuario->nome ?>
+                                    </option>
+                                <?php
+                                }   
+                                ?>
+                            </select>
                         </div>
-                        
-                        <div class="col-md-6">
-                            <label for="" class="form-label">CPF</label>
-                            <input type="text" name="cpf" value="<?= $data->cpf ?? '' ?>" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">                        
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Senha</label>
-                            <input type="password" name="senha" value="<?= $data->senha ?? '' ?>" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Confirmar Senha</label>
-                            <input type="password" name="c_senha" class="form-control">
-                        </div>
-                    </div>
 
                     <div class="row">
                         <div class="col mt-4">
                             <button type="submit" class="btn btn-primary">
                                 Salvar
                             </button>
-                            <a href="./login.php" class="btn btn-secondary">Voltar</a>
+                            <a href="../index.php" class="btn btn-secondary">Voltar</a>
                         </div>
                     </div>
                 </form>

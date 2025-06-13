@@ -15,6 +15,9 @@
         <li class="nav-item">
           <a class="nav-link" href="../exercicios/ExercicioList.php">Exercícios</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../treino/TreinoList.php">Treinos</a>
+        </li>
       </ul>
     </div>
   </div>
