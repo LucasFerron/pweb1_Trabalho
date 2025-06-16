@@ -34,7 +34,7 @@
                     
                     echo "<script>
                         setTimeout(
-                            ()=> window.location.href = './TreinoList.php', 1000
+                            ()=> window.location.href = 'home.php', 1000
                         )
                     </script>";
 
@@ -119,7 +119,7 @@
                             <button type="submit" class="btn btn-primary">
                                 Salvar
                             </button>
-                            <a href="./TreinoList.php" class="btn btn-secondary">Voltar</a>
+                            <a href="./TreinoUsuarioList.php" class="btn btn-secondary">Voltar</a>
                         </div>
                     </div>
                 </form>

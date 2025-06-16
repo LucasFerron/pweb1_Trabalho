@@ -18,6 +18,9 @@
         <li class="nav-item">
           <a class="nav-link" href="../treino/TreinoList.php">Treinos</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../treino_usuario/TreinoUsuarioList.php">Treino Usuario</a>
+        </li>
       </ul>
     </div>
   </div>

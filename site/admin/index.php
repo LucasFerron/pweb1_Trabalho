@@ -16,7 +16,7 @@
 
     <a href="./usuario/UsuarioList.php" class="btn btn-success">Usuário</a>
     <a href="./exercicios/ExercicioList.php" class="btn btn-primary">Exercícios</a>
-    <a href="./treino/TreinoForm.php" class="btn btn-primary">Treinos</a>
+    <a href="./treino_usuario/TreinoUsuarioList.php" class="btn btn-warning">Treinos</a>
 
 </div>
 
