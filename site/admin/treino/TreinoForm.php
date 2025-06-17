@@ -34,7 +34,7 @@
                     
                     echo "<script>
                         setTimeout(
-                            ()=> window.location.href = './TreinoList.php', 1000
+                            ()=> window.location.href = '../treino_usuario/TreinoUsuarioForm.php', 1000
                         )
                     </script>";
 
@@ -120,6 +120,7 @@
                                 Salvar
                             </button>
                             <a href="./TreinoList.php" class="btn btn-secondary">Voltar</a>
+                            <a href="../treino_usuario/TreinoUsuarioForm.php" class="btn btn-info">Cadastrar exercício do treino</a>
                         </div>
                     </div>
                 </form>

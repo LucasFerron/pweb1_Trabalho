@@ -33,7 +33,7 @@ $dados = !empty($_POST) ? $db->search($_POST) : $db->all();
 
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary mt-1">Buscar</button>
-                <a href="./TreinoUsuarioForm.php" class="btn btn-secondary mt-1">Cadastrar</a>
+                <a href="../treino/TreinoForm.php" class="btn btn-secondary mt-1">Cadastrar</a>
             </div>
         </div>
     </form>

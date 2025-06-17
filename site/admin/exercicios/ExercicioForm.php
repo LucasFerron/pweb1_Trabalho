@@ -13,14 +13,20 @@
 
             $data = (object) $_POST;
 
-            if(empty(trim($_POST['titulo']))){
-                $errors[] = "<li>O titulo é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['descricao']))){
-                $errors[] = "<li>A descricao é Obrigatória.</li>";
+            if(empty(trim($_POST['nome']))){
+                $errors[] = "<li>O nome é Obrigatório.</li>";
             }
             if(empty(trim($_POST['categoria_id']))){
-                $errors[] = "<li>A categoria é Obrigatória.</li>";
+                $errors[] = "<li>A categoria é Obrigatório.</li>";
+            }
+            if(empty(trim($_POST['nivel']))){
+                $errors[] = "<li>O nível é Obrigatório.</li>";
+            }
+            if(empty(trim($_POST['equipamento']))){
+                $errors[] = "<li>O equipamento é Obrigatório.</li>";
+            }
+            if(empty(trim($_POST['descricao']))){
+                $errors[] = "<li>A descricao é Obrigatório.</li>";
             }
 
 
@@ -87,7 +93,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="" class="form-label">Nome</label>
-                            <input type="text" name="titulo" value="<?php echo $data->titulo ?? '' ?>" class="form-control">
+                            <input type="text" name="nome" value="<?php echo $data->nome ?? '' ?>" class="form-control">
                         </div>
                         <div class="col-md-6 mt-5">
                             <label for="" class="form-label">Categoria</label>

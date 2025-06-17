@@ -42,7 +42,7 @@
                     
                     echo "<script>
                         setTimeout(
-                            ()=> window.location.href = './home.php', 1000
+                            ()=> window.location.href = './UsuarioList.php', 1000
                         )
                     </script>";
                 } else {

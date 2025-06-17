@@ -4,9 +4,16 @@
     include_once "../header.php";
 
 
-    $db = new db('treino');
+    $dbTreino = new db('treino');
+    $treino = $dbTreino->all();
+    $dbExercicio = new db('exercicios');
+    $exercicio = $dbExercicio->all();
     $dbUsuario = new db('usuario');
-    $usuario = $dbUsuario->all();
+    $usuarios = $dbUsuario->all();
+    $usuariosMap = [];
+    foreach ($usuarios as $usuario) {
+        $usuariosMap[$usuario->id] = $usuario->nome;
+    }
     $data = null;
     $errors = [];
     $success = '';
@@ -15,14 +22,23 @@
 
             $data = (object) $_POST;
 
-            if(empty(trim($_POST['nome']))){
-                $errors[] = "<li>O nome é Obrigatório.</li>";
+            if(empty(trim($_POST['treino_id']))){
+                $errors[] = "<li>O Treino é Obrigatório.</li>";
+            }
+            if(empty(trim($_POST['exercicio_id']))){
+                $errors[] = "<li>O Exercício é Obrigatório.</li>";
             }
             if(empty(trim($_POST['descricao']))){
-                $errors[] = "<li>A descrição é Obrigatória.</li>";
+                $errors[] = "<li>A descrição é Obrigatório.</li>";
             }
-            if(empty(trim($_POST['usuario_id']))){
-                $errors[] = "<li>O usuário é Obrigatório.</li>";
+            if(empty(trim($_POST['serie']))){
+                $errors[] = "<li>A quantidade de séries é Obrigatório.</li>";
+            }
+            if(empty(trim($_POST['repeticoes']))){
+                $errors[] = "<li>A quantidade de repetições é Obrigatório.</li>";
+            }
+            if(empty(trim($_POST['carga']))){
+                $errors[] = "<li>A quantidade de carga é Obrigatório.</li>";
             }
 
 
@@ -34,7 +50,7 @@
                     
                     echo "<script>
                         setTimeout(
-                            ()=> window.location.href = 'home.php', 1000
+                            ()=> window.location.href = './TreinoUsuarioList.php', 1000
                         )
                     </script>";
 
@@ -83,10 +99,43 @@
                     </div>
                 <?php } ?>
 
-                <h3>Formulário Treinos</h3>
+                <h3>Formulário Treinos por Usuário</h3>
                 <!--http://localhost/php/site/admin/TreinoForm.php-->
                 <form action="" method="post">
                     <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
+
+                    <div class="col-md-6">
+                        <label for="" class="form-label">Treino</label>
+                        <select name="treino_id" class="select-control">
+                            <?php
+                                foreach($treino as $treino) {
+                            ?>
+
+                            <option value="<?= $treino->id ?>">
+                                <?= $treino->nome ?> - <?= $usuariosMap[$treino->usuario_id] ?? 'Usuário desconhecido' ?>
+                            </option>
+                            <?php
+                                }   
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="" class="form-label">Exercício</label>
+                        <select name="exercicio_id" class="select-control">
+                            <?php
+                                foreach($exercicio as $exercicio) {
+                            ?>
+
+                            <option value="<?= $exercicio->id ?>">
+                                <?= $exercicio->nome ?>
+                            </option>
+                            <?php
+                                }   
+                            ?>
+                        </select>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <label for="" class="form-label">Nome</label>
@@ -98,21 +147,6 @@
                             <input type="text" name="descricao" value="<?= $data->descricao ?? '' ?>" class="form-control">
                         </div>
                     </div>
-
-                    <div class="col-md-6">
-                            <label for="" class="form-label">Usuario</label>
-                            <select name="usuario_id" class="select-control">
-                                <?php
-                                foreach($usuario as $usuario) {
-                                ?>
-                                    <option value="<?= $usuario->id ?>">
-                                        <?= $usuario->nome ?>
-                                    </option>
-                                <?php
-                                }   
-                                ?>
-                            </select>
-                        </div>
 
                     <div class="row">
                         <div class="col mt-4">

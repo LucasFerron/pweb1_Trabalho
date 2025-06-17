@@ -49,10 +49,11 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Titulo</th>
-                        <th scope="col">Data de Publicação</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Nome</th>
                         <th scope="col">Categoria</th>
+                        <th scope="col">Equipamento</th>
+                        <th scope="col">Nível</th>
+                        <th scope="col">Descrição</th>
                         <th scope="col">Ação</th>
                         <th scope="col">Ação</th>
                     </tr>
@@ -61,16 +62,15 @@
                     <?php
                         $dbCategoria = new $db('categoria');
                         foreach($dados as $item) {
-                            $data_publicacao = date('d/m/Y', strtotime($item->data_publicacao));
                             $categoria = $dbCategoria->find($item->categoria_id);
                             echo"
                             <tr>
                                 <th scope='row'>$item->id</th>
-                                <td>$item->titulo</td>
-                                <td>$data_publicacao</td>
-                                <td>$item->status</td>
                                 <td>$item->nome</td>
                                 <td>$categoria->nome</td>
+                                <td>$item->equipamento</td>
+                                <td>$item->nivel</td> 
+                                <td>$item->descricao</td>
                                 <td>
                                     <a href='./ExercicioForm.php?id=$item->id'>Editar</a>
                                 </td>
