@@ -35,9 +35,6 @@
             if(empty(trim($_POST['repeticoes']))){
                 $errors[] = "<li>A quantidade de repetições é Obrigatório.</li>";
             }
-            if(empty(trim($_POST['carga']))){
-                $errors[] = "<li>A quantidade de carga é Obrigatório.</li>";
-            }
 
 
             if (empty(($errors))){
