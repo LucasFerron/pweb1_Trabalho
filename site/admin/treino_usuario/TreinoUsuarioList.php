@@ -25,8 +25,7 @@ $dados = !empty($_POST) ? $dbTreino->search($_POST) : $dbTreino->all();
             <div class="col-md-2">
                 <select name="tipo" class="form-select">
                     <option value="nome">Nome</option>
-                    <option value="descricao">Descrição</option>
-                    <option value="usuario_id">Usuário</option>
+                    <option value="descricao">Usuario</option>
                 </select>
             </div>
             <div class="col-md-6">

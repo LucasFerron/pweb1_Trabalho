@@ -19,41 +19,49 @@
 CREATE DATABASE IF NOT EXISTS `bancotrabalhopweb1` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `bancotrabalhopweb1`;
 
--- Copiando estrutura para tabela bancotrabalhopweb1.exercicios
-CREATE TABLE IF NOT EXISTS `exercicios` (
-  `id` int NOT NULL,
-  `nome` varchar(100) DEFAULT NULL,
-  `musculo` enum('peito','perna','triceps','abdomen','biceps','ombro','costas') DEFAULT NULL,
-  `equipamento` varchar(50) DEFAULT NULL,
-  `nivel` enum('iniciante','intermediario','avancado') DEFAULT NULL,
-  `descricao` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+-- Copiando estrutura para tabela bancotrabalhopweb1.categoria
+CREATE TABLE IF NOT EXISTS `categoria` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Exportação de dados foi desmarcado.
 
--- Copiando estrutura para tabela bancotrabalhopweb1.treinos
-CREATE TABLE IF NOT EXISTS `treinos` (
+-- Copiando estrutura para tabela bancotrabalhopweb1.exercicios
+CREATE TABLE IF NOT EXISTS `exercicios` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(100) DEFAULT NULL,
+  `categoria_id` int DEFAULT NULL,
+  `equipamento` varchar(50) DEFAULT NULL,
+  `nivel` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `descricao` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Exportação de dados foi desmarcado.
+
+-- Copiando estrutura para tabela bancotrabalhopweb1.treino
+CREATE TABLE IF NOT EXISTS `treino` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) DEFAULT NULL,
   `descricao` text,
-  `id_usuario` int unsigned DEFAULT NULL,
+  `usuario_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Exportação de dados foi desmarcado.
 
 -- Copiando estrutura para tabela bancotrabalhopweb1.treino_exercicios
 CREATE TABLE IF NOT EXISTS `treino_exercicios` (
-  `id` int NOT NULL,
-  `id_treino` int DEFAULT NULL,
-  `id_exercicios` int DEFAULT NULL,
-  `ordem` int DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `treino_id` int DEFAULT NULL,
+  `exercicios_id` int DEFAULT NULL,
   `series` int DEFAULT NULL,
   `repeticoes` varchar(50) DEFAULT NULL,
   `carga` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Exportação de dados foi desmarcado.
 
@@ -67,19 +75,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `email` varchar(50) DEFAULT NULL,
   `cargo` enum('aluno','professor') DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
-INSERT INTO `categoria` (`id`, `nome`) VALUES
-	(1, 'Peito'),
-	(2, 'Perna'),
-	(3, 'Triceps'),
-	(4, 'Abdomen'),
-	(5, 'Bíceps'),
-	(6, 'Ombro'),
-	(7, 'Costas')
-	
-  
 -- Exportação de dados foi desmarcado.
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
