@@ -14,6 +14,7 @@
     foreach ($usuarios as $usuario) {
         $usuariosMap[$usuario->id] = $usuario->nome;
     }
+    $db = new db('treino_exercicios');
     $data = null;
     $errors = [];
     $success = '';
@@ -25,13 +26,10 @@
             if(empty(trim($_POST['treino_id']))){
                 $errors[] = "<li>O Treino é Obrigatório.</li>";
             }
-            if(empty(trim($_POST['exercicio_id']))){
+            if(empty(trim($_POST['exercicios_id']))){
                 $errors[] = "<li>O Exercício é Obrigatório.</li>";
             }
-            if(empty(trim($_POST['descricao']))){
-                $errors[] = "<li>A descrição é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['serie']))){
+            if(empty(trim($_POST['series']))){
                 $errors[] = "<li>A quantidade de séries é Obrigatório.</li>";
             }
             if(empty(trim($_POST['repeticoes']))){
@@ -122,7 +120,7 @@
 
                     <div class="col-md-6">
                         <label for="" class="form-label">Exercício</label>
-                        <select name="exercicio_id" class="select-control">
+                        <select name="exercicios_id" class="select-control">
                             <?php
                                 foreach($exercicio as $exercicio) {
                             ?>
@@ -137,14 +135,17 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Nome</label>
-                            <input type="text" name="nome" value="<?php echo $data->nome ?? '' ?>" class="form-control">
+                        <div class="col-md-4">
+                            <label for="" class="form-label">Séries</label>
+                            <input type="number" name="series" value="<?php echo $data->nome ?? '' ?>" class="form-control">
                         </div>
-
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Descrição</label>
-                            <input type="text" name="descricao" value="<?= $data->descricao ?? '' ?>" class="form-control">
+                        <div class="col-md-4">
+                            <label for="" class="form-label">Repetições</label>
+                            <input type="number" name="repeticoes" value="<?= $data->descricao ?? '' ?>" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="" class="form-label">Carga</label>
+                            <input type="number" name="carga" value="<?php echo $data->nome ?? '' ?>" class="form-control">
                         </div>
                     </div>
 

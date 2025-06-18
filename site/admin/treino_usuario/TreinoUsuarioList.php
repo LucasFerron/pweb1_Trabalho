@@ -2,15 +2,18 @@
 include "../db.class.php";
 include_once "../header.php"; 
 
-$db = new db('treino');
+$dbTreino = new db('treino');
+$dbUsuario = new db('usuario');
+$dbTreinoEx = new db('treino_exercicios');
+$dbExercicios = new db('exercicios');
 
 // Excluir treino se ID for passado via GET
 if (!empty($_GET['id'])) {
-    $db->destroy($_GET['id']);
+    $dbTreino->destroy($_GET['id']);
 }
 
 // Buscar ou listar todos
-$dados = !empty($_POST) ? $db->search($_POST) : $db->all();
+$dados = !empty($_POST) ? $dbTreino->search($_POST) : $dbTreino->all();
 ?>
 
 <body>
@@ -26,11 +29,9 @@ $dados = !empty($_POST) ? $db->search($_POST) : $db->all();
                     <option value="usuario_id">Usuário</option>
                 </select>
             </div>
-
             <div class="col-md-6">
                 <input type="text" name="valor" placeholder="Pesquisar..." class="form-control">
             </div>
-
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary mt-1">Buscar</button>
                 <a href="../treino/TreinoForm.php" class="btn btn-secondary mt-1">Cadastrar</a>
@@ -40,13 +41,14 @@ $dados = !empty($_POST) ? $db->search($_POST) : $db->all();
 
     <div class="accordion" id="accordionTreinos">
         <?php
-        $dbUsuario = new db('usuario');
         $contador = 0;
-
         foreach ($dados as $item) {
             $contador++;
             $usuario = $dbUsuario->find($item->usuario_id);
             $nomeUsuario = $usuario ? $usuario->nome : 'Usuário não encontrado';
+
+            // Buscar exercícios desse treino
+            $exercicios = $dbTreinoEx->where(['treino_id' => $item->id]);
 
             echo "
             <div class='accordion-item'>
@@ -59,6 +61,35 @@ $dados = !empty($_POST) ? $db->search($_POST) : $db->all();
                 <div id='collapse{$contador}' class='accordion-collapse collapse' aria-labelledby='heading{$contador}' data-bs-parent='#accordionTreinos'>
                     <div class='accordion-body'>
                         <p><strong>Descrição:</strong> {$item->descricao}</p>
+                        <hr>
+                        <h6>Exercícios:</h6>
+            ";
+
+            if ($exercicios) {
+                echo "<ul>";
+                foreach ($exercicios as $ex) {
+                    $detalhesEx = $dbExercicios->find($ex->exercicios_id);
+                    $nomeExercicio = $detalhesEx ? $detalhesEx->nome : "Exercício não encontrado";
+                    $equipamento = $detalhesEx ? $detalhesEx->equipamento : "-";
+                    $nivel = $detalhesEx ? $detalhesEx->nivel : "-";
+
+                    echo "
+                        <li>
+                            <strong>{$nomeExercicio}</strong> 
+                            (Equipamento: {$equipamento}, Nível: {$nivel})<br>
+                            Séries: <strong>{$ex->series}</strong> | 
+                            Repetições: <strong>{$ex->repeticoes}</strong> | 
+                            Carga: <strong>{$ex->carga} kg</strong>
+                        </li>
+                        <hr>
+                    ";
+                }
+                echo "</ul>";
+            } else {
+                echo "<p><em>Sem exercícios registrados.</em></p>";
+            }
+
+            echo "
                         <a href='./TreinoUsuarioForm.php?id={$item->id}' class='btn btn-sm btn-warning'>Editar</a>
                         <a href='./TreinoUsuarioList.php?id={$item->id}' 
                            class='btn btn-sm btn-danger'

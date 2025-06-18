@@ -174,4 +174,24 @@ class db {
         }
     }
 
+    public function where($conditions) {
+    $conn = $this->conn();
+    $sql = "SELECT * FROM $this->table_name WHERE ";
+
+    $clauses = [];
+    $values = [];
+
+    foreach ($conditions as $column => $value) {
+        $clauses[] = "$column = ?";
+        $values[] = $value;
+    }
+
+    $sql .= implode(' AND ', $clauses);
+
+    $st = $conn->prepare($sql);
+    $st->execute($values);
+
+    return $st->fetchAll(PDO::FETCH_CLASS);
+}
+
 }
