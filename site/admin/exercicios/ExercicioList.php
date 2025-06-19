@@ -26,8 +26,8 @@
                     <div class="row">
                         <div class="col-md-2">
                             <select name="tipo" class="form-select">
-                                <option value="titulo">Titulo</option>
-                                <option value="status">Status</option>
+                                <option value="nome">Nome</option>
+                                <option value="categoria">Categoria</option>
                             </select>
                         </div>
 

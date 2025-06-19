@@ -13,7 +13,41 @@ if (!empty($_GET['id'])) {
 }
 
 // Buscar ou listar todos
-$dados = !empty($_POST) ? $dbTreino->search($_POST) : $dbTreino->all();
+if (!empty($_POST['valor'])) {
+    $tipo = $_POST['tipo'];
+    $valor = $_POST['valor'];
+
+    // Se o usuário buscou pelo nome do usuário
+    if ($tipo === 'usuario') {
+        // Buscar usuário pelo nome
+        $usuarios = $dbUsuario->search([
+            'tipo' => 'nome',
+            'valor' => $valor
+        ]);
+
+
+        if (!empty($usuarios)) {
+            $usuario_id = $usuarios[0]->id; // pega o primeiro que encontrar
+            $dados = $dbTreino->search([
+                'tipo' => 'usuario_id',
+                'valor' => $usuario_id
+            ]);
+        } else {
+            $dados = []; // nenhum usuário encontrado
+        }
+
+    } else {
+        // Buscar diretamente por 'nome' do treino, por exemplo
+        $dados = $dbTreino->search([
+            'tipo' => $tipo,
+            'valor' => $valor
+        ]);
+    }
+} else {
+    $dados = $dbTreino->all();
+}
+
+
 ?>
 
 <body>
@@ -24,9 +58,10 @@ $dados = !empty($_POST) ? $dbTreino->search($_POST) : $dbTreino->all();
         <div class="row">
             <div class="col-md-2">
                 <select name="tipo" class="form-select">
-                    <option value="nome">Nome</option>
-                    <option value="descricao">Usuario</option>
+                    <option value="nome">Treino</option>
+                    <option value="usuario">Usuário</option>
                 </select>
+
             </div>
             <div class="col-md-6">
                 <input type="text" name="valor" placeholder="Pesquisar..." class="form-control">
