@@ -26,7 +26,15 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Exportação de dados foi desmarcado.
+-- Copiando dados para a tabela bancotrabalhopweb1.categoria: ~7 rows (aproximadamente)
+INSERT INTO `categoria` (`id`, `nome`) VALUES
+	(1, 'Peito'),
+	(2, 'Perna'),
+	(3, 'Triceps'),
+	(4, 'Abdomen'),
+	(5, 'Bíceps'),
+	(6, 'Ombro'),
+	(7, 'Costas');
 
 -- Copiando estrutura para tabela bancotrabalhopweb1.exercicios
 CREATE TABLE IF NOT EXISTS `exercicios` (
@@ -39,7 +47,19 @@ CREATE TABLE IF NOT EXISTS `exercicios` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Exportação de dados foi desmarcado.
+-- Copiando dados para a tabela bancotrabalhopweb1.exercicios: ~11 rows (aproximadamente)
+INSERT INTO `exercicios` (`id`, `nome`, `categoria_id`, `equipamento`, `nivel`, `descricao`) VALUES
+	(1, 'Supino', 1, 'Banco de Supino', '1', 'teste'),
+	(2, 'Supino Inclinado', 1, 'Banco Inclinado do Supino', '2', 'Banco inclinado com suportes laterais e uma barra para anilhas de peso'),
+	(3, 'Crucifixo', 1, 'No rack', '1', 'Exercício na máquina sentado'),
+	(4, 'Flexão de Braço', 1, 'Solo', '2', 'Flexão estilo militar'),
+	(5, 'Tríceps Francês', 1, 'Polia Baixa', '1', 'Crossover Unilateral'),
+	(6, 'Crucifixo Inverso', 7, 'No rack', '1', 'No rack sentado'),
+	(7, 'Puxada Pronada', 7, 'Polia Alta', '1', 'No banco da remada'),
+	(8, 'Remada Baixa', 7, 'Polia Baixa', '1', 'Banco da remada'),
+	(9, 'Rosca Direta', 5, 'Barra W', '2', 'Sentado'),
+	(10, 'Rosca Alternada', 5, 'Halter', '2', 'Em pé'),
+	(11, 'Rosca Inversa', 5, 'Polia Baixa', '1', 'Na polia');
 
 -- Copiando estrutura para tabela bancotrabalhopweb1.treino
 CREATE TABLE IF NOT EXISTS `treino` (
@@ -50,7 +70,11 @@ CREATE TABLE IF NOT EXISTS `treino` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Exportação de dados foi desmarcado.
+-- Copiando dados para a tabela bancotrabalhopweb1.treino: ~1 rows (aproximadamente)
+INSERT INTO `treino` (`id`, `nome`, `descricao`, `usuario_id`) VALUES
+	(1, 'Treino A', 'Peito e Tríceps', 1),
+	(2, 'Treino B', 'Costas e Bíceps', 1),
+	(3, 'Treino A', 'Peito e Tríceps', 2);
 
 -- Copiando estrutura para tabela bancotrabalhopweb1.treino_exercicios
 CREATE TABLE IF NOT EXISTS `treino_exercicios` (
@@ -63,7 +87,20 @@ CREATE TABLE IF NOT EXISTS `treino_exercicios` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Exportação de dados foi desmarcado.
+-- Copiando dados para a tabela bancotrabalhopweb1.treino_exercicios: ~13 rows (aproximadamente)
+INSERT INTO `treino_exercicios` (`id`, `treino_id`, `exercicios_id`, `series`, `repeticoes`, `carga`) VALUES
+	(1, 1, 1, 3, '12', 30),
+	(2, 1, 2, 4, '10', 20),
+	(3, 1, 3, 3, '20', 3),
+	(4, 1, 4, 4, '10', 0),
+	(5, 1, 5, 4, '12', 4),
+	(6, 2, 6, 3, '15', 4),
+	(7, 2, 7, 4, '12', 9),
+	(8, 2, 8, 4, '10', 7),
+	(9, 2, 9, 3, '12', 14),
+	(10, 2, 10, 4, '10', 14),
+	(11, 2, 11, 4, '10', 3),
+	(12, 4, 5, 3, '12', 4);
 
 -- Copiando estrutura para tabela bancotrabalhopweb1.usuario
 CREATE TABLE IF NOT EXISTS `usuario` (
@@ -77,7 +114,10 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Exportação de dados foi desmarcado.
+-- Copiando dados para a tabela bancotrabalhopweb1.usuario: ~0 rows (aproximadamente)
+INSERT INTO `usuario` (`id`, `nome`, `senha`, `cpf`, `telefone`, `email`, `cargo`) VALUES
+	(1, 'Angelo Antonio Lucietto', '$2y$10$086c6hnBo0V.Io.u3u6ggu6mdW/WWdFXjUmwcqxlgR1vTJIQudqIq', '10509254918', '49991676199', 'angelolucietto@gmail.com', 'professor'),
+	(2, 'Teste Silva', '$2y$10$cSjAHX1ZfEqC2bUK4ccUs.6HYoBo8nhM3Hinby/UQumI0uAmEb/gu', '111.222.333-44', '4999999999', 'teste.silva@gmail.com', 'aluno');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
