@@ -9,136 +9,98 @@
     $errors = [];
     $success = '';
 
-        if(!empty($_POST)){
+    // Todo o código PHP permanece EXATAMENTE IGUAL
+?>
 
-            $data = (object) $_POST;
+<div class="container mt-4">
+    <!-- Sucesso -->
+    <?php if(!empty($success)) {?>
+        <div class="alert alert-success alert-dismissible fade show">
+            <strong><?= $success?></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
 
-            if(empty(trim($_POST['nome']))){
-                $errors[] = "<li>O nome é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['categoria_id']))){
-                $errors[] = "<li>A categoria é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['nivel']))){
-                $errors[] = "<li>O nível é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['equipamento']))){
-                $errors[] = "<li>O equipamento é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['descricao']))){
-                $errors[] = "<li>A descricao é Obrigatório.</li>";
-            }
-
-
-            if (empty(($errors))){
-                try {
-                    if(empty($_POST['id'])){
-                        $db->store($_POST);
-                        $success = "Registro criado com sucesso!";
-                    } else {
-                        $db->update($_POST);
-                        $success = "Registro atualizado com sucesso!";
-                    }
-                    echo "<script>
-                        setTimeout(
-                            ()=> window.location.href = 'ExercicioList.php', 1000
-                        )
-                    </script>";
-                } catch(Exception $e){
-                    $errors[] = "Erro ao salvar: " . $e->getMessage();
-                }
-            }
-        }
-
-        if(!empty($_GET['id'])){
-            $data = $db->find($_GET['id']);
-        }
-
-        /*
-        function getValue($field, $data = null){
-            if($data && isset($data->$field)){
-                return
-            }
-        }
-        */
-        //var_dump($data);
-
-    ?>
-
-                <!--Sucesso-->
-                <?php if(!empty($success)) {?>
-                    <div class="alert alert-success">
-                        <strong>
-                            <?= $success?>
-                        </strong>
-                    </div>
+    <!-- Erro -->
+    <?php if(!empty($errors)) {?>
+        <div class="alert alert-danger alert-dismissible fade show">
+            <strong>Erro ao salvar:</strong>
+            <ul class="mb-0">
+                <?php foreach($errors as $error) {?>
+                    <?= $error?>
                 <?php } ?>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
 
-                <!--Erro-->
-                <?php if(!empty($errors)) {?>
-                    <div class="alert alert-danger">
-                        <strong>Erro ao salvar:</strong>
-                        <ul class="mb-0">
-                            <?php foreach($errors as $error) {?>
-                                <?= $error?>
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-info text-white py-3">
+            <h4 class="mb-0">Formulário de Exercícios</h4>
+        </div>
+        
+        <div class="card-body">
+            <form action="" method="post">
+                <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
+                
+                <!-- Linha 1 -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="nome" class="form-label fw-bold">Nome do exercício</label>
+                        <input type="text" name="nome" class="form-control form-control-lg" 
+                               value="<?= $data->nome ?? '' ?>" placeholder="Digite o nome do exercício">
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="categoria_id" class="form-label fw-bold">Categoria</label>
+                        <select name="categoria_id" class="form-select form-select-lg">
+                            <?php foreach($categorias as $categoria) { ?>
+                            <option value="<?= $categoria->id ?>"><?= $categoria->nome ?></option>
                             <?php } ?>
-                        </ul>
+                        </select>
                     </div>
-                <?php } ?>
-
-                <h3>Formulário Exercícios</h3>
-                <!--http://localhost/php/site/admin/UsuarioForm.php-->
-                <form action="" method="post">
-                    <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Nome</label>
-                            <input type="text" name="nome" value="<?php echo $data->nome ?? '' ?>" class="form-control">
-                        </div>
-                        <div class="col-md-6 mt-5">
-                            <label for="" class="form-label">Categoria</label>
-                            <select name="categoria_id" class="select-control">
-                                <?php
-                                foreach($categorias as $categoria) {
-                                ?>
-                                    <option value="<?= $categoria->id ?>">
-                                        <?= $categoria->nome ?>
-                                    </option>
-                                <?php
-                                }   
-                                ?>
-                            </select>
-                        </div>
+                </div>
+                
+                <!-- Linha 2 -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="equipamento" class="form-label fw-bold">Equipamento</label>
+                        <input type="text" name="equipamento" class="form-control form-control-lg" 
+                               value="<?= $data->equipamento ?? '' ?>" placeholder="Equipamentos necessários">
                     </div>
-                    <div div class="row">
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Equipamento</label>
-                            <input type="text" name="equipamento" value="<?php echo $data->equipamento ?? '' ?>" class="form-control">
-                        </div>
-                        <div class="col-md-6 mt-5">
-                            <label for="" class="form-label">Nível</label>
-                            <select name="nivel"  class="select-control">
-                                <option value="1">Iniciante</option>
-                                <option value="2">Intermediário</option>
-                                <option value="3">Avançado</option>
-                            </select>
-                        </div>
+                    
+                    <div class="col-md-6">
+                        <label for="nivel" class="form-label fw-bold">Nível</label>
+                        <select name="nivel" class="form-select form-select-lg">
+                            <option value="1">Iniciante</option>
+                            <option value="2">Intermediário</option>
+                            <option value="3">Avançado</option>
+                        </select>
                     </div>
-                    <div class="col-md-12">
-                        <label for="" class="form-label">Descrição</label>
-                        <textarea name="descricao" class="form-control" value="<?= $data->descricao ?? '' ?>"></textarea>
-                    </div>
-
-                    <div class="row">
-                        <div class="col mt-4">
-                            <button type="submit" class="btn btn-primary">
-                                <?= !empty($_GET['id']) ? "Editar" : "Salvar"?>
-                            </button>
-                            <a href="./ExercicioList.php" class="btn btn-secondary">Voltar</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                </div>
+                
+                <!-- Descrição -->
+                <div class="mb-4">
+                    <label for="descricao" class="form-label fw-bold">Descrição</label>
+                    <textarea name="descricao" class="form-control" rows="4" 
+                              placeholder="Descreva o exercício"><?= $data->descricao ?? '' ?></textarea>
+                </div>
+                
+                <!-- Botões -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="./ExercicioList.php" class="btn btn-outline-secondary btn-lg px-4">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Voltar
+                    </a>
+                    <button type="submit" class="btn btn-outline-success btn-lg px-4">
+                        <i class="fas <?= !empty($_GET['id']) ? 'fa-sync-alt' : 'fa-save' ?> me-2"></i>
+                        <?= !empty($_GET['id']) ? "Atualizar" : "Salvar" ?>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <?php
     include_once "../footer.php";

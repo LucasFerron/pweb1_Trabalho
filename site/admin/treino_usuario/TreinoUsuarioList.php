@@ -53,8 +53,8 @@ if (!empty($_POST['valor'])) {
                 <input type="text" name="valor" placeholder="Pesquisar..." class="form-control">
             </div>
             <div class="col-md-4">
-                <button type="submit" class="btn btn-primary mt-1">Buscar</button>
-                <a href="../treino/TreinoForm.php" class="btn btn-secondary mt-1">Cadastrar</a>
+                <button type="submit" class="btn btn-primary mt-1"><i class='fa-solid fa-pen-to-square'></i> Buscar</button>
+                <a href="../treino/TreinoForm.php" class="btn btn-secondary mt-1"><i class="fa-solid fa-plus"></i> Cadastrar</a>
             </div>
         </div>
     </form>

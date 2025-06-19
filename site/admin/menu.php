@@ -19,9 +19,10 @@
           <a class="nav-link" href="../treino/TreinoList.php">Treinos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="../treino_usuario/TreinoUsuarioList.php">Treino Usuario</a>
+          <a class="nav-link" href="../treino_usuario/TreinoUsuarioList.php">Treino de Usuarios</a>
         </li>
       </ul>
     </div>
+    <a href="../usuario/Login.php?logout=true" style="float: right;" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
   </div>
 </nav>

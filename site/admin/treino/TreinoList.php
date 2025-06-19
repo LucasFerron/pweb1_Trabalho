@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col-md-2">
                         <select name="tipo" class="form-select">
-                            <option value="nome">Nome</option>
+                            <option value="nome">Treino</option>
                             <option value="descricao">Descrição</option>
                             <option value="usuario_id">Usuário</option>
                         </select>
@@ -39,8 +39,8 @@
 
                 <div class="row">
                     <div class="col mt-4">
-                        <button type="submit" class="btn btn-primary">Buscar</button>
-                        <a href="./TreinoForm.php" class="btn btn-secondary">Cadastrar</a>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+                        <a href="./TreinoForm.php" class="btn btn-secondary"><i class="fa-solid fa-plus"></i> Cadastrar</a>
                     </div>
                 </div>
             </form>
@@ -51,7 +51,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Nome</th>
+                        <th>Treino</th>
                         <th>Descrição</th>
                         <th>Usuário</th>
                         <th>Ações</th>
@@ -73,11 +73,11 @@
                                 <td>{$item->nome}</td>
                                 <td>{$item->descricao}</td>
                                 <td>{$nomeUsuario}</td>
-                                <td><a href='./TreinoForm.php?id={$item->id}'>Editar</a></td>
+                                <td><a class='btn btn-warning' title='Editar' href='./TreinoForm.php?id={$item->id}'><i class='fa-solid fa-pen-to-square'></i></a></td>
                                 <td>
-                                    <a 
+                                    <a class='btn btn-danger' title='Excluir'
                                         onclick='return confirm(\"Deseja excluir este treino?\")' 
-                                        href='./TreinoList.php?id={$item->id}'>Excluir</a>
+                                        href='./TreinoList.php?id={$item->id}'><i class='fa-solid fa-trash'></i></a>
                                 </td>
                             </tr>
                             ";

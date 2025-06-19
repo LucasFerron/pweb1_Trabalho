@@ -1,157 +1,120 @@
 <?php
-    include "../db.class.php";
+include "../db.class.php";
+include_once "../header.php";
 
-    include_once "../header.php";
+$db = new db('usuario');
+$data = null;
+$errors = [];
+$success = '';
 
+if(!empty($_POST)){
+    $data = (object) $_POST;
 
-    $db = new db('usuario');
-    $data = null;
-    $errors = [];
-    $success = '';
+    if(empty(trim($_POST['login']))){
+        $errors[] = "<li>O login é Obrigatório.</li>";
+    }
+    if(empty(trim($_POST['senha']))){
+        $errors[] = "<li>A senha é Obrigatória.</li>";
+    }
 
-        if(!empty($_POST)){
+    if (empty(($errors))){
+        try {
+            if($_POST['senha'] === $_POST['c_senha']){
+                $_POST['senha'] = password_hash($_POST['senha'], PASSWORD_BCRYPT);
+                unset($_POST['c_senha']);
 
-            $data = (object) $_POST;
-
-            if(empty(trim($_POST['nome']))){
-                $errors[] = "<li>O nome é Obrigatório.</li>";
+                $db->store($_POST);
+                $success = "Registro criado com sucesso!";
+            
+                echo "<script>
+                    setTimeout(
+                        ()=> window.location.href = 'home.php', 1000
+                    )
+                </script>";
+            } else {
+                $errors[] = "<li>As senhas não conferem. Tente novamente.</li>";
             }
-            if(empty(trim($_POST['email']))){
-                $errors[] = "<li>O email é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['cpf']))){
-                $errors[] = "<li>O cpf é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['telefone']))){
-                $errors[] = "<li>O telefone é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['login']))){
-                $errors[] = "<li>O login é Obrigatório.</li>";
-            }
-            if(empty(trim($_POST['senha']))){
-                $errors[] = "<li>A senha é Obrigatória.</li>";
-            }
-
-
-            if (empty(($errors))){
-                try {
-                    if($_POST['senha'] === $_POST['c_senha']){
-
-                        $_POST['senha'] = password_hash($_POST['senha'], PASSWORD_BCRYPT);
-                        unset($_POST['c_senha']);
-
-                        $db->store($_POST);
-                        $success = "Registro criado com sucesso!";
-                    
-                    echo "<script>
-                        setTimeout(
-                            ()=> window.location.href = 'home.php', 1000
-                        )
-                    </script>";
-                } else {
-                    $errors[] = "<li>As senhas não conferem. Tente novamente.</li>";
-                }
-
-                } catch(Exception $e){
-                    $errors[] = "Erro ao salvar: " . $e->getMessage();
-                }
-            }
+        } catch(Exception $e){
+            $errors[] = "Erro ao salvar: " . $e->getMessage();
         }
+    }
+}
 
-        if(!empty($_GET['id'])){
-            $data = $db->find($_GET['id']);
-        }
+if(!empty($_GET['id'])){
+    $data = $db->find($_GET['id']);
+}
+?>
 
-        /*
-        function getValue($field, $data = null){
-            if($data && isset($data->$field)){
-                return
-            }
-        }
-        */
-        //var_dump($data);
-
-    ?>
-
-
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white text-center">
+                    <h4 class="my-2">Acesso do Treinador</h4>
+                </div>
                 
-                <!--Sucesso-->
-                <?php if(!empty($success)) {?>
-                    <div class="alert alert-success">
-                        <strong>
-                            <?= $success?>
-                        </strong>
-                    </div>
-                <?php } ?>
-
-                <!--Erro-->
-                <?php if(!empty($errors)) {?>
-                    <div class="alert alert-danger">
-                        <strong>Erro ao salvar:</strong>
-                        <ul class="mb-0">
-                            <?php foreach($errors as $error) {?>
-                                <?= $error?>
-                            <?php } ?>
-                        </ul>
-                    </div>
-                <?php } ?>
-
-                <h3>Login</h3>
-                <!--http://localhost/php/site/admin/UsuarioForm.php-->
-                <form action="" method="post">
-                    <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Nome</label>
-                            <input type="text" name="nome" value="<?php echo $data->nome ?? '' ?>" class="form-control">
+                <div class="card-body p-4">
+                    <!--Sucesso-->
+                    <?php if(!empty($success)) {?>
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <strong><?= $success?></strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
+                    <?php } ?>
 
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Telefone</label>
-                            <input type="text" name="telefone" value="<?= $data->telefone ?? '' ?>" class="form-control">
+                    <!--Erro-->
+                    <?php if(!empty($errors)) {?>
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Erro ao acessar:</strong>
+                            <ul class="mb-0">
+                                <?php foreach($errors as $error) {?>
+                                    <?= $error?>
+                                <?php } ?>
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
+                    <?php } ?>
+
+                    <div class="text-center mb-4">
+                        <i class="bi bi-person-lock fs-1 text-primary"></i>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="" class="form-label">Email</label>
-                            <input type="email" name="email" value="<?= $data->email ?? '' ?>" class="form-control">
+                    <form action="" method="post">
+                        <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
+
+                        <div class="mb-3">
+                            <label for="login" class="form-label">Login</label>
+                            <input type="text" name="login" id="login" value="<?= $data->login ?? '' ?>" 
+                                   class="form-control" placeholder="Digite seu login" required>
                         </div>
                         
-                        <div class="col-md-6">
-                            <label for="" class="form-label">CPF</label>
-                            <input type="text" name="cpf" value="<?= $data->cpf ?? '' ?>" class="form-control">
+                        <div class="mb-4">
+                            <label for="senha" class="form-label">Senha</label>
+                            <input type="password" name="senha" id="senha" value="<?= $data->senha ?? '' ?>" 
+                                   class="form-control" placeholder="Digite sua senha" required>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="" class="form-label">Login</label>
-                            <input type="text" name="login" value="<?= $data->login ?? '' ?>" class="form-control">
-                        </div>
-                        
-                        <div class="col-md-4">
-                            <label for="" class="form-label">Senha</label>
-                            <input type="password" name="senha" value="<?= $data->senha ?? '' ?>" class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="" class="form-label">Confirmar Senha</label>
-                            <input type="password" name="c_senha" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col mt-4">
-                            <button type="submit" class="btn btn-primary">
-                                Salvar
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>
+                                Entrar
                             </button>
-                            <a href="./login.php" class="btn btn-secondary">Voltar</a>
                         </div>
-                    </div>
-                </form>
 
-    <?php
-    
-    include_once "../footer.php";
-    
-    ?>
+                        <div class="text-center">
+                            <small>Não possui login? <a href="cadastro.php" class="text-info">Cadastre-se</a></small>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="card-footer text-center bg-light">
+                    <small class="text-muted">Sistema de Gerenciamento de Treinos</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+include_once "../footer.php";
+?>

@@ -38,8 +38,8 @@
 
                     <div class="row">
                         <div class="col mt-4">
-                            <button type="submit" class="btn btn-primary">Buscar</button>
-                            <a href="./ExercicioForm.php" class="btn btn-secondary">Cadastrar</a>
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Buscar</button>
+                            <a href="./ExercicioForm.php" class="btn btn-secondary"><i class="fa-solid fa-plus"></i> Cadastrar</a>
                         </div>
                     </div>
                 </form>
@@ -72,12 +72,13 @@
                                 <td>$item->nivel</td> 
                                 <td>$item->descricao</td>
                                 <td>
-                                    <a href='./ExercicioForm.php?id=$item->id'>Editar</a>
+                                    <a class='btn btn-warning' href='./ExercicioForm.php?id=$item->id'><i class='fa-solid fa-pen-to-square'></i></a>
                                 </td>
                                 <td>
-                                    <a 
+                                    <a class='btn btn-danger'
+                                        title='Excluir'
                                         onclick='return confirm(\"Deseja Excluir?\")'
-                                        href='./ExercicioList.php?id=$item->id'>Exluir
+                                        href='./ExercicioList.php?id=$item->id'><i class='fa-solid fa-trash'></i>
                                     </a>
                                 </td>
                             </tr>
