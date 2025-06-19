@@ -1,56 +1,43 @@
 <?php
 include "../db.class.php";
-include_once "../header.php"; 
+include_once "../header.php";
 
 $dbTreino = new db('treino');
 $dbUsuario = new db('usuario');
 $dbTreinoEx = new db('treino_exercicios');
 $dbExercicios = new db('exercicios');
 
-// Excluir treino se ID for passado via GET
+// Excluir treino se passado via GET
 if (!empty($_GET['id'])) {
     $dbTreino->destroy($_GET['id']);
 }
 
-// Buscar ou listar todos
+// Excluir exercício do treino
+if (!empty($_GET['id_excluir_exercicio'])) {
+    $dbTreinoEx->destroy($_GET['id_excluir_exercicio']);
+}
+
+// Buscar treinos com base na pesquisa
 if (!empty($_POST['valor'])) {
     $tipo = $_POST['tipo'];
     $valor = $_POST['valor'];
 
-    // Se o usuário buscou pelo nome do usuário
     if ($tipo === 'usuario') {
-        // Buscar usuário pelo nome
-        $usuarios = $dbUsuario->search([
-            'tipo' => 'nome',
-            'valor' => $valor
-        ]);
-
-
+        $usuarios = $dbUsuario->search(['tipo' => 'nome', 'valor' => $valor]);
         if (!empty($usuarios)) {
-            $usuario_id = $usuarios[0]->id; // pega o primeiro que encontrar
-            $dados = $dbTreino->search([
-                'tipo' => 'usuario_id',
-                'valor' => $usuario_id
-            ]);
+            $usuario_id = $usuarios[0]->id;
+            $dados = $dbTreino->search(['tipo' => 'usuario_id', 'valor' => $usuario_id]);
         } else {
-            $dados = []; // nenhum usuário encontrado
+            $dados = [];
         }
-
     } else {
-        // Buscar diretamente por 'nome' do treino, por exemplo
-        $dados = $dbTreino->search([
-            'tipo' => $tipo,
-            'valor' => $valor
-        ]);
+        $dados = $dbTreino->search(['tipo' => $tipo, 'valor' => $valor]);
     }
 } else {
     $dados = $dbTreino->all();
 }
-
-
 ?>
 
-<body>
 <div class="container mt-5">
     <h3>Lista de Treinos</h3>
 
@@ -61,7 +48,6 @@ if (!empty($_POST['valor'])) {
                     <option value="nome">Treino</option>
                     <option value="usuario">Usuário</option>
                 </select>
-
             </div>
             <div class="col-md-6">
                 <input type="text" name="valor" placeholder="Pesquisar..." class="form-control">
@@ -81,7 +67,6 @@ if (!empty($_POST['valor'])) {
             $usuario = $dbUsuario->find($item->usuario_id);
             $nomeUsuario = $usuario ? $usuario->nome : 'Usuário não encontrado';
 
-            // Buscar exercícios desse treino
             $exercicios = $dbTreinoEx->where(['treino_id' => $item->id]);
 
             echo "
@@ -100,7 +85,7 @@ if (!empty($_POST['valor'])) {
             ";
 
             if ($exercicios) {
-                echo "<ul>";
+                echo "<ul class='list-group'>";
                 foreach ($exercicios as $ex) {
                     $detalhesEx = $dbExercicios->find($ex->exercicios_id);
                     $nomeExercicio = $detalhesEx ? $detalhesEx->nome : "Exercício não encontrado";
@@ -108,14 +93,19 @@ if (!empty($_POST['valor'])) {
                     $nivel = $detalhesEx ? $detalhesEx->nivel : "-";
 
                     echo "
-                        <li>
-                            <strong>{$nomeExercicio}</strong> 
-                            (Equipamento: {$equipamento}, Nível: {$nivel})<br>
-                            Séries: <strong>{$ex->series}</strong> | 
-                            Repetições: <strong>{$ex->repeticoes}</strong> | 
-                            Carga: <strong>{$ex->carga} kg</strong>
-                        </li>
-                        <hr>
+                    <li class='list-group-item'>
+                        <strong>{$nomeExercicio}</strong> 
+                        (Equipamento: {$equipamento}, Nível: {$nivel})<br>
+                        Séries: <strong>{$ex->series}</strong> | 
+                        Repetições: <strong>{$ex->repeticoes}</strong> | 
+                        Carga: <strong>{$ex->carga} kg</strong>
+                        <div class='mt-2'>
+                            <a href='../treino_usuario/TreinoUsuarioForm.php?id_exercicio={$ex->id}' class='btn btn-sm btn-outline-warning'>Editar</a>
+                            <a href='./TreinoUsuarioList.php?id_excluir_exercicio={$ex->id}' 
+                               class='btn btn-sm btn-outline-danger'
+                               onclick='return confirm(\"Deseja remover este exercício do treino?\")'>Excluir</a>
+                        </div>
+                    </li>
                     ";
                 }
                 echo "</ul>";
@@ -124,12 +114,14 @@ if (!empty($_POST['valor'])) {
             }
 
             echo "
-                        <a href='./TreinoUsuarioForm.php?id={$item->id}' class='btn btn-sm btn-warning'>Editar</a>
-                        <a href='./TreinoUsuarioList.php?id={$item->id}' 
-                           class='btn btn-sm btn-danger'
-                           onclick='return confirm(\"Deseja excluir este treino?\")'>
-                           Excluir
-                        </a>
+                        <div class='mt-3'>
+                            <a href='./TreinoUsuarioForm.php?id={$item->id}' class='btn btn-sm btn-warning'>Editar Treino</a>
+                            <a href='./TreinoUsuarioList.php?id={$item->id}' 
+                               class='btn btn-sm btn-danger'
+                               onclick='return confirm(\"Deseja excluir este treino?\")'>
+                               Excluir Treino
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

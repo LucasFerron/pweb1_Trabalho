@@ -88,29 +88,23 @@ class db {
 
 
 
-    public function update($dados){
-        $id = $dados['id'];
-        $conn = $this->conn(); 
+    public function update($id, $data) {
+    $conn = $this->conn();
 
-        $sql = "UPDATE $this->table_name SET ";
-        $flag = 0;
-        $arrayDados = [];
-
-        foreach($dados as $campo => $valor){
-            if($flag == 0){
-                $sql .= "$campo = ?";
-            } else {
-                $sql .= ", $campo = ?";
-            }
-            $flag = 1;
-            $arrayDados[] = $valor;
-        }
-
-        $sql .= "WHERE id = $id";
-
-        $st = $conn->prepare(query: $sql);
-        $st->execute($arrayDados);
+    $sets = [];
+    foreach ($data as $key => $value) {
+        $sets[] = "$key = ?";
     }
+
+    $sql = "UPDATE {$this->table_name} SET " . implode(', ', $sets) . " WHERE id = ?";
+    $st = $conn->prepare($sql);
+
+    $values = array_values($data);
+    $values[] = $id;
+
+    $st->execute($values);
+}
+
 
 
 
