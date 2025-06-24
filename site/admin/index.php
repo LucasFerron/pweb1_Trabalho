@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ./Login.php"); // redireciona para a tela de login
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>

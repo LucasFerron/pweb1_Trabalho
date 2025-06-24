@@ -88,25 +88,31 @@ class db {
 
 
 
-    public function update($id, $data) {
-    $conn = $this->conn();
+    public function update($dados, $id) {
+        
+    $conn = $this->conn(); 
 
-    $sets = [];
-    foreach ($data as $key => $value) {
-        $sets[] = "$key = ?";
+    $sql = "UPDATE $this->table_name SET ";
+    $arrayDados = [];
+    $flag = 0;
+
+    foreach ($dados as $campo => $valor) {
+        if ($campo == 'id') continue; // ignora o campo id
+        if ($flag == 0) {
+            $sql .= "$campo = ?";
+        } else {
+            $sql .= ", $campo = ?";
+        }
+        $arrayDados[] = $valor;
+        $flag = 1;
     }
 
-    $sql = "UPDATE {$this->table_name} SET " . implode(', ', $sets) . " WHERE id = ?";
+    $sql .= " WHERE id = ?";  // condição final
+    $arrayDados[] = $id;      // adiciona o id como último valor para o WHERE
+
     $st = $conn->prepare($sql);
-
-    $values = array_values($data);
-    $values[] = $id;
-
-    $st->execute($values);
+    $st->execute($arrayDados);
 }
-
-
-
 
 
     public function find($id){
@@ -154,10 +160,10 @@ class db {
 
         $conn = $this->conn(); 
 
-        $sql = "SELECT * FROM $this->table_name WHERE name = ?";
+        $sql = "SELECT * FROM $this->table_name WHERE email = ?";
 
         $st = $conn->prepare( $sql);
-        $st->execute([$dados['name']]);
+        $st->execute([$dados['email']]);
 
         $result = $st->fetchObject();
 

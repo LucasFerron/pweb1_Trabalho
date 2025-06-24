@@ -1,56 +1,73 @@
 <?php
-include "../db.class.php";
-include_once "../header.php";
+session_start();
+include "./db.class.php";
 
 $db = new db('usuario');
 $data = null;
 $errors = [];
 $success = '';
 
-if(!empty($_POST)){
-    $data = (object) $_POST;
+if (!empty($_POST)) {
+    $data = (object) $_POST; 
+    $email = $_POST['email'] ?? '';
+    $senha = $_POST['senha'] ?? '';
 
-    if(empty(trim($_POST['login']))){
-        $errors[] = "<li>O login é Obrigatório.</li>";
+    //função trim remove espaços em branco do inicio e fim da string, 
+    if (empty(trim($_POST['email']))) {
+        $errors[] = "<li>O email é obrigatorio</li>";
     }
-    if(empty(trim($_POST['senha']))){
-        $errors[] = "<li>A senha é Obrigatória.</li>";
+
+    if (empty(trim($_POST['senha']))) {
+        $errors[] = "<li>O senha é obrigatorio</li>";
     }
 
-    if (empty(($errors))){
-        try {
-            if($_POST['senha'] === $_POST['c_senha']){
-                $_POST['senha'] = password_hash($_POST['senha'], PASSWORD_BCRYPT);
-                unset($_POST['c_senha']);
+    $params = [
+        'email' => $email,
+        'tipo' => 'email',
+        'valor' => $data->id ?? ''
+    ];
 
-                $db->store($_POST);
-                $success = "Registro criado com sucesso!";
-            
-                echo "<script>
-                    setTimeout(
-                        ()=> window.location.href = 'home.php', 1000
-                    )
-                </script>";
-            } else {
-                $errors[] = "<li>As senhas não conferem. Tente novamente.</li>";
-            }
-        } catch(Exception $e){
-            $errors[] = "Erro ao salvar: " . $e->getMessage();
+    $usuarios = $db->search($params);
+
+    if (count($usuarios) > 0) {
+        $usuario = $usuarios[0];
+        
+        if (password_verify($senha, $usuario->senha)) {
+            $_SESSION['usuario_id'] = $usuario->id;
+            header("Location: ../index.php");
+            exit();
+        } else {
+            $errors[] = "Senha incorreta.";
         }
+    } else {
+        $errors[] = "E-mail não encontrado.";
     }
-}
-
-if(!empty($_GET['id'])){
-    $data = $db->find($_GET['id']);
 }
 ?>
+
+
+<!DOCTYPE html>
+<html lang="pt">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />   
+        <title>Login de Usuário</title>
+        
+    </head>
+    <body>
+        <div class="container mt-5">
+            <div class="row"></div>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
             <div class="card shadow">
                 <div class="card-header bg-info text-white text-center">
-                    <h4 class="my-2">Acesso do Treinador</h4>
+                    <h4 class="my-2">Acesso do Sistema</h4>
                 </div>
                 
                 <div class="card-body p-4">
@@ -83,9 +100,9 @@ if(!empty($_GET['id'])){
                         <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
 
                         <div class="mb-3">
-                            <label for="login" class="form-label">Login</label>
-                            <input type="text" name="login" id="login" value="<?= $data->login ?? '' ?>" 
-                                   class="form-control" placeholder="Digite seu login" required>
+                            <label for="login" class="form-label">Email</label>
+                            <input type="text" name="email" id="login" value="<?= $data->login ?? '' ?>" 
+                                   class="form-control" placeholder="Digite seu Email" required>
                         </div>
                         
                         <div class="mb-4">
@@ -116,5 +133,5 @@ if(!empty($_GET['id'])){
 </div>
 
 <?php
-include_once "../footer.php";
+include_once "./footer.php";
 ?>

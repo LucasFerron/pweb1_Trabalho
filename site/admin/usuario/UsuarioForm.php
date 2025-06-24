@@ -1,7 +1,75 @@
 <?php
-    include "../db.class.php";
-    include_once "../header.php";
+include "../db.class.php";
 
+include_once "../header.php";
+
+$db = new db('usuario');
+$data = null;
+$errors = [];
+$success = '';
+
+if (!empty($_POST)) {
+
+    //Sempre preserva os dados do POST para exibição
+    $data = (object) $_POST; //converte o vetor para objeto
+
+    //função trim remove espaços em branco do inicio e fim da string, 
+    if (empty(trim($_POST['nome']))) {
+        $errors[] = "<li>O nome é obrigatorio</li>";
+    }
+
+    if (empty(trim($_POST['email']))) {
+        $errors[] = "<li>O email é obrigatorio</li>";
+    }
+
+    if (empty(trim($_POST['cpf']))) {
+        $errors[] = "<li>O cpf é obrigatorio</li>";
+    }
+
+    if (empty(trim($_POST['telefone']))) {
+        $errors[] = "<li>O telefone é obrigatorio</li>";
+    }
+
+    if (empty(trim($_POST['login']))) {
+        $errors[] = "<li>O login é obrigatorio</li>";
+    }
+
+    if (empty(trim($_POST['senha']))) {
+        $errors[] = "<li>O senha é obrigatorio</li>";
+    }
+
+    if (empty($errors)) {
+        try {
+            if ($_POST['senha'] === $_POST['c_senha']) {
+
+                $_POST['senha'] = password_hash(
+                    $_POST['senha'],
+                    PASSWORD_BCRYPT
+                );
+                unset($_POST['c_senha']);
+
+                //  var_dump($_POST);
+                // exit;
+                $db->store($_POST);
+                $success = "Registro criado com sucesso!";
+
+                echo "<script>
+                    setTimeout(
+                        ()=> window.location.href = '../Login.php', 1500
+                    )
+                </script>";
+            } else {
+                $errors[] = "<li>A senha não coincidem. Tente novamente</li>";
+            }
+        } catch (Exception $e) {
+            $errors[] = $e->getMessage();
+        }
+    }
+}
+
+if (!empty($_GET['id'])) {
+    $data = $db->find($_GET['id']);
+}
 ?>
 
 <div class="container mt-4">
