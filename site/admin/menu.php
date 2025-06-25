@@ -23,6 +23,6 @@
         </li>
       </ul>
     </div>
-    <a href="../usuario/Login.php?logout=true" style="float: right;" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+    <a href="../index.php?logout=true" style="float: right;" class="btn btn-danger"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
   </div>
 </nav>

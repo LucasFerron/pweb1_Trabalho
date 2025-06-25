@@ -42,6 +42,7 @@ if (!empty($_POST)) {
         $errors[] = "E-mail não encontrado.";
     }
 }
+
 ?>
 
 
