@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `treino` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Copiando dados para a tabela bancotrabalhopweb1.treino: ~1 rows (aproximadamente)
+-- Copiando dados para a tabela bancotrabalhopweb1.treino: ~3 rows (aproximadamente)
 INSERT INTO `treino` (`id`, `nome`, `descricao`, `usuario_id`) VALUES
 	(1, 'Treino A', 'Peito e Tríceps', 1),
 	(2, 'Treino B', 'Costas e Bíceps', 1),
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `treino_exercicios` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Copiando dados para a tabela bancotrabalhopweb1.treino_exercicios: ~13 rows (aproximadamente)
+-- Copiando dados para a tabela bancotrabalhopweb1.treino_exercicios: ~0 rows (aproximadamente)
 INSERT INTO `treino_exercicios` (`id`, `treino_id`, `exercicios_id`, `series`, `repeticoes`, `carga`) VALUES
 	(1, 1, 1, 3, '12', 30),
 	(2, 1, 2, 4, '10', 20),
@@ -112,12 +112,12 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `email` varchar(50) DEFAULT NULL,
   `cargo` enum('aluno','professor') DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Copiando dados para a tabela bancotrabalhopweb1.usuario: ~0 rows (aproximadamente)
+-- Copiando dados para a tabela bancotrabalhopweb1.usuario: ~2 rows (aproximadamente)
 INSERT INTO `usuario` (`id`, `nome`, `senha`, `cpf`, `telefone`, `email`, `cargo`) VALUES
-	(1, 'Angelo Antonio Lucietto', '$2y$10$086c6hnBo0V.Io.u3u6ggu6mdW/WWdFXjUmwcqxlgR1vTJIQudqIq', '10509254918', '49991676199', 'angelolucietto@gmail.com', 'professor'),
-	(2, 'Teste Silva', '$2y$10$cSjAHX1ZfEqC2bUK4ccUs.6HYoBo8nhM3Hinby/UQumI0uAmEb/gu', '111.222.333-44', '4999999999', 'teste.silva@gmail.com', 'aluno');
+	(1, 'Angelo Antonio Lucietto', '$2y$10$r08uIRjdFJiKZe3/v1atwu7BiGfxM6u2dVBSGelMzmGjv4SwX4q22', '10509254918', '49991676199', 'angelolucietto@gmail.com', 'professor'),
+	(2, 'Teste Silva 2', '$2y$10$biVOfxf.u3.GxUgjQ4Bzmue9ZsBpO47qZioRzPCpa1rNMGKrV6WCO', '111.222.333-44', '4999999999', 'teste.silva@gmail.com', 'aluno');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
