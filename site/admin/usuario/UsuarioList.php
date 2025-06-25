@@ -56,6 +56,7 @@
                         <th scope="col">CPF</th>
                         <th scope="col">Telefone</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Cargo</th>
                         <th scope="col">Ação</th>
                         <th scope="col">Ação</th>
                     </tr>
@@ -70,6 +71,7 @@
                                 <td>$item->cpf</td>
                                 <td>$item->telefone</td>
                                 <td>$item->email</td>
+                                <td>$item->cargo</td>
                                 <td>
                                     <a  class='btn btn-warning' title='Editar' href='./UsuarioForm.php?id=$item->id'><i class='fa-solid fa-pen-to-square'></i></a>
                                 </td>

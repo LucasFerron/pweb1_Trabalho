@@ -30,41 +30,44 @@ if (!empty($_POST)) {
         $errors[] = "<li>O telefone é obrigatorio</li>";
     }
 
-    if (empty(trim($_POST['login']))) {
-        $errors[] = "<li>O login é obrigatorio</li>";
-    }
-
     if (empty(trim($_POST['senha']))) {
         $errors[] = "<li>O senha é obrigatorio</li>";
+    }
+
+    if (empty(trim($_POST['cargo']))) {
+        $errors[] = "<li>O cargo é obrigatorio</li>";
     }
 
     if (empty($errors)) {
         try {
             if ($_POST['senha'] === $_POST['c_senha']) {
 
-                $_POST['senha'] = password_hash(
-                    $_POST['senha'],
-                    PASSWORD_BCRYPT
-                );
+                // Criptografa a senha
+                $_POST['senha'] = password_hash($_POST['senha'], PASSWORD_DEFAULT);
                 unset($_POST['c_senha']);
 
-                //  var_dump($_POST);
-                // exit;
-                $db->store($_POST);
-                $success = "Registro criado com sucesso!";
+                if (!empty($_POST['id'])) {
+                    // Atualiza usuário existente
+                    $db->update($_POST, $_POST['id']);
+                    $success = "Usuário atualizado com sucesso!";
+                } else {
+                    // Cria novo usuário
+                    $db->store($_POST);
+                    $success = "Registro criado com sucesso!";
+                }
 
                 echo "<script>
-                    setTimeout(
-                        ()=> window.location.href = '../Login.php', 1500
-                    )
+                    setTimeout(() => window.location.href = './UsuarioList.php', 1500);
                 </script>";
+
             } else {
-                $errors[] = "<li>A senha não coincidem. Tente novamente</li>";
+                $errors[] = "<li>As senhas não coincidem. Tente novamente</li>";
             }
         } catch (Exception $e) {
             $errors[] = $e->getMessage();
         }
     }
+
 }
 
 if (!empty($_GET['id'])) {
@@ -165,10 +168,20 @@ if (!empty($_GET['id'])) {
                         </div>
                     </div>
                 </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="cargo" class="form-label fw-bold">Cargo</label>
+                        <select name="cargo" class="form-select form-select-lg">
+                            <option value="professor">Professor</option>
+                            <option value="aluno">Aluno</option>
+                        </select>
+                    </div>
+                </div>
                 
                 <!-- Botões -->
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="./login.php" class="btn btn-outline-secondary btn-lg px-4">
+                    <a href="./UsuarioList.php" class="btn btn-outline-secondary btn-lg px-4">
                         <i class="fas fa-arrow-left me-2"></i> Voltar
                     </a>
                     <button type="submit" class="btn btn-success btn-lg px-4">

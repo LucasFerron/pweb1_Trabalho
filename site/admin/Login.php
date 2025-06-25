@@ -22,19 +22,18 @@ if (!empty($_POST)) {
     }
 
     $params = [
-        'email' => $email,
         'tipo' => 'email',
-        'valor' => $data->id ?? ''
+        'valor' => $email
     ];
 
     $usuarios = $db->search($params);
-
+    
     if (count($usuarios) > 0) {
         $usuario = $usuarios[0];
         
         if (password_verify($senha, $usuario->senha)) {
             $_SESSION['usuario_id'] = $usuario->id;
-            header("Location: ../index.php");
+            header("Location: ./index.php");
             exit();
         } else {
             $errors[] = "Senha incorreta.";
@@ -101,14 +100,12 @@ if (!empty($_POST)) {
 
                         <div class="mb-3">
                             <label for="login" class="form-label">Email</label>
-                            <input type="text" name="email" id="login" value="<?= $data->login ?? '' ?>" 
-                                   class="form-control" placeholder="Digite seu Email" required>
+                            <input type="text" name="email" id="login" value="<?= $data->email ?? '' ?>" class="form-control" placeholder="Digite seu Email" required>
                         </div>
                         
                         <div class="mb-4">
                             <label for="senha" class="form-label">Senha</label>
-                            <input type="password" name="senha" id="senha" value="<?= $data->senha ?? '' ?>" 
-                                   class="form-control" placeholder="Digite sua senha" required>
+                            <input type="password" name="senha" id="senha" class="form-control" placeholder="Digite sua senha" required>
                         </div>
 
                         <div class="d-grid mb-3">
@@ -119,7 +116,7 @@ if (!empty($_POST)) {
                         </div>
 
                         <div class="text-center">
-                            <small>Não possui login? <a href="cadastro.php" class="text-info">Cadastre-se</a></small>
+                            <small>Não possui login? Entre em contato com sua academia.</small>
                         </div>
                     </form>
                 </div>
