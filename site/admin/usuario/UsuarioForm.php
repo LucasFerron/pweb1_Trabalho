@@ -10,10 +10,10 @@ $success = '';
 
 if (!empty($_POST)) {
 
-    //Sempre preserva os dados do POST para exibição
-    $data = (object) $_POST; //converte o vetor para objeto
+    
+    $data = (object) $_POST;
 
-    //função trim remove espaços em branco do inicio e fim da string, 
+    
     if (empty(trim($_POST['nome']))) {
         $errors[] = "<li>O nome é obrigatorio</li>";
     }
@@ -42,16 +42,13 @@ if (!empty($_POST)) {
         try {
             if ($_POST['senha'] === $_POST['c_senha']) {
 
-                // Criptografa a senha
                 $_POST['senha'] = password_hash($_POST['senha'], PASSWORD_DEFAULT);
                 unset($_POST['c_senha']);
 
                 if (!empty($_POST['id'])) {
-                    // Atualiza usuário existente
                     $db->update($_POST, $_POST['id']);
                     $success = "Usuário atualizado com sucesso!";
                 } else {
-                    // Cria novo usuário
                     $db->store($_POST);
                     $success = "Registro criado com sucesso!";
                 }
@@ -76,7 +73,6 @@ if (!empty($_GET['id'])) {
 ?>
 
 <div class="container mt-4">
-    <!-- Sucesso -->
     <?php if(!empty($success)) { ?>
         <div class="alert alert-success alert-dismissible fade show">
             <i class="fas fa-check-circle me-2"></i>
@@ -85,7 +81,7 @@ if (!empty($_GET['id'])) {
         </div>
     <?php } ?>
 
-    <!-- Erro -->
+
     <?php if(!empty($errors)) { ?>
         <div class="alert alert-danger alert-dismissible fade show">
             <i class="fas fa-exclamation-triangle me-2"></i>
@@ -148,7 +144,6 @@ if (!empty($_GET['id'])) {
                     </div>
                 </div>
                 
-                <!-- Linha 3 - Senhas -->
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label for="senha" class="form-label fw-bold">Senha</label>
@@ -179,7 +174,6 @@ if (!empty($_GET['id'])) {
                     </div>
                 </div>
                 
-                <!-- Botões -->
                 <div class="d-flex justify-content-between mt-4">
                     <a href="./UsuarioList.php" class="btn btn-outline-secondary btn-lg px-4">
                         <i class="fas fa-arrow-left me-2"></i> Voltar

@@ -4,7 +4,7 @@
 
     $db = new db('treino');
     $dbUsuario = new db('usuario');
-    $listaUsuarios = $dbUsuario->all(); // Alterado o nome da variável para evitar conflito
+    $listaUsuarios = $dbUsuario->all();
     $data = null;
     $errors = [];
     $success = '';
@@ -44,7 +44,7 @@
 ?>
 
 <div class="container mt-4">
-    <!-- Sucesso -->
+
     <?php if(!empty($success)) { ?>
         <div class="alert alert-success alert-dismissible fade show">
             <i class="fas fa-check-circle me-2"></i>
@@ -53,7 +53,6 @@
         </div>
     <?php } ?>
 
-    <!-- Erro -->
     <?php if(!empty($errors)) { ?>
         <div class="alert alert-danger alert-dismissible fade show">
             <i class="fas fa-exclamation-triangle me-2"></i>
@@ -76,7 +75,6 @@
             <form action="" method="post">
                 <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
                 
-                <!-- Linha 1 - Nome e Descrição -->
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label for="nome" class="form-label fw-bold">Nome do Treino</label>
@@ -97,7 +95,7 @@
                     </div>
                 </div>
                 
-                <!-- Seleção de Aluno - CORRIGIDO -->
+                
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label for="usuario_id" class="form-label fw-bold">Aluno</label>
@@ -114,8 +112,7 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Botões -->
+
                 <div class="d-flex justify-content-between mt-4">
                     <div>
                         <a href="./TreinoList.php" class="btn btn-outline-secondary btn-lg px-4 me-2">

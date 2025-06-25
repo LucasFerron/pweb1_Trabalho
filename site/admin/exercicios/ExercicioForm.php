@@ -9,11 +9,9 @@
     $errors = [];
     $success = '';
 
-    // Todo o código PHP permanece EXATAMENTE IGUAL
 ?>
 
 <div class="container mt-4">
-    <!-- Sucesso -->
     <?php if(!empty($success)) {?>
         <div class="alert alert-success alert-dismissible fade show">
             <strong><?= $success?></strong>
@@ -21,7 +19,6 @@
         </div>
     <?php } ?>
 
-    <!-- Erro -->
     <?php if(!empty($errors)) {?>
         <div class="alert alert-danger alert-dismissible fade show">
             <strong>Erro ao salvar:</strong>

@@ -1,93 +1,134 @@
 <?php
 session_start();
+include "./db.class.php";
 
-if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ./Login.php"); // redireciona para a tela de login
-    exit();
+$db = new db('usuario');
+$data = null;
+$errors = [];
+$success = '';
+
+if (!empty($_POST)) {
+    $data = (object) $_POST; 
+    $email = $_POST['email'] ?? '';
+    $senha = $_POST['senha'] ?? '';
+
+    //função trim remove espaços em branco do inicio e fim da string, 
+    if (empty(trim($_POST['email']))) {
+        $errors[] = "<li>O email é obrigatorio</li>";
+    }
+
+    if (empty(trim($_POST['senha']))) {
+        $errors[] = "<li>O senha é obrigatorio</li>";
+    }
+
+    $params = [
+        'tipo' => 'email',
+        'valor' => $email
+    ];
+
+    $usuarios = $db->search($params);
+    
+    if (count($usuarios) > 0) {
+        $usuario = $usuarios[0];
+        
+        if (password_verify($senha, $usuario->senha)) {
+            $_SESSION['usuario_id'] = $usuario->id;
+            header("Location: ./index.php");
+            exit();
+        } else {
+            $errors[] = "Senha incorreta.";
+        }
+    } else {
+        $errors[] = "E-mail não encontrado.";
+    }
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>Painel de Administração</title>
-    <style>
-        /* animação cards */
-        .dashboard-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-    </style>
-</head>
 
-<body class="bg-light">
-    <div class="container py-5">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white py-3">
-                <h2 class="mb-0"><i class="fas fa-tachometer-alt me-2"></i>Painel de Administração</h2>
-            </div>
-            
-            <div class="card-body">
-                <p class="lead mb-4">Bem-vindo ao Sistema de Gerenciamento de Treinos</p>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />   
+        <title>Login de Usuário</title>
+        
+    </head>
+    <body>
+        <div class="container mt-5">
+            <div class="row"></div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white text-center">
+                    <h4 class="my-2">Acesso do Sistema</h4>
+                </div>
                 
-                <div class="row g-4">
-                    <!-- Card Usuários -->
-                    <div class="col-md-4">
-                        <div class="card dashboard-card h-100">
-                            <div class="card-body text-center">
-                                <i class="fas fa-users fa-3x text-success mb-3"></i>
-                                <h5 class="card-title">Gerenciar Usuários</h5>
-                                <p class="card-text">Cadastre e edite alunos e treinadores</p>
-                                <a href="./usuario/UsuarioList.php" class="btn btn-success btn-lg w-100">
-                                    <i class="fas fa-user-cog me-2"></i> Acessar
-                                </a>
-                            </div>
+                <div class="card-body p-4">
+                    <!--Sucesso-->
+                    <?php if(!empty($success)) {?>
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <strong><?= $success?></strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                    </div>
-                    
-                    <!-- Card Exercícios -->
-                    <div class="col-md-4">
-                        <div class="card dashboard-card h-100">
-                            <div class="card-body text-center">
-                                <i class="fas fa-dumbbell fa-3x text-primary mb-3"></i>
-                                <h5 class="card-title">Gerenciar Exercícios</h5>
-                                <p class="card-text">Cadastre e edite os exercícios disponíveis</p>
-                                <a href="./exercicios/ExercicioList.php" class="btn btn-primary btn-lg w-100">
-                                    <i class="fas fa-running me-2"></i> Acessar
-                                </a>
-                            </div>
+                    <?php } ?>
+
+                    <!--Erro-->
+                    <?php if(!empty($errors)) {?>
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Erro ao acessar:</strong>
+                            <ul class="mb-0">
+                                <?php foreach($errors as $error) {?>
+                                    <?= $error?>
+                                <?php } ?>
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
+                    <?php } ?>
+
+                    <div class="text-center mb-4">
+                        <i class="bi bi-person-lock fs-1 text-primary"></i>
                     </div>
-                    
-                    <!-- Card Treinos -->
-                    <div class="col-md-4">
-                        <div class="card dashboard-card h-100">
-                            <div class="card-body text-center">
-                                <i class="fas fa-clipboard-list fa-3x text-warning mb-3"></i>
-                                <h5 class="card-title">Gerenciar Treinos</h5>
-                                <p class="card-text">Monte e edite treinos para os alunos</p>
-                                <a href="./treino_usuario/TreinoUsuarioList.php" class="btn btn-warning btn-lg w-100">
-                                    <i class="fas fa-calendar-alt me-2"></i> Acessar
-                                </a>
-                            </div>
+
+                    <form action="dashboard.php" method="post">
+                        <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
+
+                        <div class="mb-3">
+                            <label for="login" class="form-label">Email</label>
+                            <input type="text" name="email" id="login" value="<?= $data->email ?? '' ?>" class="form-control" placeholder="Digite seu Email" required>
                         </div>
-                    </div>
+                        
+                        <div class="mb-4">
+                            <label for="senha" class="form-label">Senha</label>
+                            <input type="password" name="senha" id="senha" class="form-control" placeholder="Digite sua senha" required>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>
+                                Entrar
+                            </button>
+                        </div>
+
+                        <div class="text-center">
+                            <small>Não possui login? Entre em contato com sua academia.</small>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="card-footer text-center bg-light">
+                    <small class="text-muted">Sistema de Gerenciamento de Treinos</small>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <?php include_once "./footer.php"; ?>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous"></script>
-</body>
-</html>
+<?php
+include_once "./footer.php";
+?>

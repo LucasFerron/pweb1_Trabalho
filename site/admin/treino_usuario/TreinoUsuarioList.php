@@ -7,17 +7,14 @@ $dbUsuario = new db('usuario');
 $dbTreinoEx = new db('treino_exercicios');
 $dbExercicios = new db('exercicios');
 
-// Excluir treino se passado via GET
 if (!empty($_GET['id'])) {
     $dbTreino->destroy($_GET['id']);
 }
 
-// Excluir exercício do treino
 if (!empty($_GET['id_excluir_exercicio'])) {
     $dbTreinoEx->destroy($_GET['id_excluir_exercicio']);
 }
 
-// Buscar treinos com base na pesquisa
 if (!empty($_POST['valor'])) {
     $tipo = $_POST['tipo'];
     $valor = $_POST['valor'];

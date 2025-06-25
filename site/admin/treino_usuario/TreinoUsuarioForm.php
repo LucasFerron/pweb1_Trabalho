@@ -113,7 +113,6 @@ if (!empty($_POST)) {
             <form action="" method="post">
                 <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
 
-                <!-- Linha 1: Treino e Exercício -->
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Treino</label>
@@ -148,7 +147,6 @@ if (!empty($_POST)) {
                     </div>
                 </div>
 
-                <!-- Linha 2: Detalhes do exercício -->
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Séries</label>

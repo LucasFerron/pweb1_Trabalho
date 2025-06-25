@@ -4,12 +4,10 @@
 
     $db = new db('treino');
 
-    // Excluir treino se ID for passado via GET
     if (!empty($_GET['id'])) {
         $db->destroy($_GET['id']);
     }
 
-    // Buscar ou listar todos
     if (!empty($_POST)) {
         $dados = $db->search($_POST);
     } else {
@@ -60,10 +58,10 @@
                 </thead>
                 <tbody>
                     <?php
-                        $dbUsuario = new db('usuario'); // conexão com tabela de usuários
+                        $dbUsuario = new db('usuario');
 
                         foreach ($dados as $item) {
-                            // Buscar o usuário pelo ID
+                            
                             $usuario = $dbUsuario->find($item->usuario_id);
                             $nomeUsuario = $usuario ? $usuario->nome : 'Usuário não encontrado';
 
