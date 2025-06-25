@@ -1,7 +1,14 @@
 <?php
 session_start();
 
-// Se já estiver logado, redireciona direto para o painel
+// Se clicou em "Sair"
+if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
+
+// Já está logado? Vai direto pro painel
 if (isset($_SESSION['usuario_id'])) {
     header("Location: dashboard.php");
     exit();
@@ -15,41 +22,38 @@ $errors = [];
 $success = '';
 
 if (!empty($_POST)) {
-    $data = (object) $_POST; 
-    $email = $_POST['email'] ?? '';
-    $senha = $_POST['senha'] ?? '';
+    $data = (object) $_POST;
+    $email = trim($_POST['email'] ?? '');
+    $senha = trim($_POST['senha'] ?? '');
 
-    //função trim remove espaços em branco do inicio e fim da string, 
-    if (empty(trim($_POST['email']))) {
-        $errors[] = "<li>O email é obrigatorio</li>";
+    if (empty($email)) {
+        $errors[] = "<li>O email é obrigatório</li>";
     }
 
-    if (empty(trim($_POST['senha']))) {
-        $errors[] = "<li>O senha é obrigatorio</li>";
+    if (empty($senha)) {
+        $errors[] = "<li>A senha é obrigatória</li>";
     }
 
-    $params = [
-        'tipo' => 'email',
-        'valor' => $email
-    ];
+    if (empty($errors)) {
+        $usuarios = $db->search([
+            'tipo' => 'email',
+            'valor' => $email
+        ]);
 
-    $usuarios = $db->search($params);
-    
-    if (count($usuarios) > 0) {
-        $usuario = $usuarios[0];
-        
-        if (password_verify($senha, $usuario->senha)) {
-            $_SESSION['usuario_id'] = $usuario->id;
-            header("Location: dashboard.php");
-            exit();
+        if (count($usuarios) > 0) {
+            $usuario = $usuarios[0];
+            if (password_verify($senha, $usuario->senha)) {
+                $_SESSION['usuario_id'] = $usuario->id;
+                header("Location: dashboard.php");
+                exit();
+            } else {
+                $errors[] = "<li>Senha incorreta.</li>";
+            }
         } else {
-            $errors[] = "Senha incorreta.";
+            $errors[] = "<li>E-mail não encontrado.</li>";
         }
-    } else {
-        $errors[] = "E-mail não encontrado.";
     }
 }
-
 ?>
 
 
