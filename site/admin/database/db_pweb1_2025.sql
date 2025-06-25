@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Servidor:                     127.0.0.1
--- Versão do servidor:           8.0.42 - MySQL Community Server - GPL
+-- Versão do servidor:           8.0.30 - MySQL Community Server - GPL
 -- OS do Servidor:               Win64
 -- HeidiSQL Versão:              12.1.0.6537
 -- --------------------------------------------------------
@@ -116,8 +116,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 
 -- Copiando dados para a tabela bancotrabalhopweb1.usuario: ~3 rows (aproximadamente)
 INSERT INTO `usuario` (`id`, `nome`, `senha`, `cpf`, `telefone`, `email`, `cargo`) VALUES
-	(1, 'Angelo Antonio Lucietto', '$2y$10$r08uIRjdFJiKZe3/v1atwu7BiGfxM6u2dVBSGelMzmGjv4SwX4q22', '10509254918', '49991676199', 'angelolucietto@gmail.com', 'professor'),
-	(2, 'Teste Silva 2', '$2y$10$biVOfxf.u3.GxUgjQ4Bzmue9ZsBpO47qZioRzPCpa1rNMGKrV6WCO', '111.222.333-44', '4999999999', 'teste.silva@gmail.com', 'aluno'),
+	(1, 'Angelo Antonio Lucietto', '123', '10509254918', '49991676199', 'angelolucietto@gmail.com', 'professor'),
+	(2, 'Teste Silva', '$2y$10$cSjAHX1ZfEqC2bUK4ccUs.6HYoBo8nhM3Hinby/UQumI0uAmEb/gu', '111.222.333-44', '4999999999', 'teste.silva@gmail.com', 'aluno'),
 	(9, 'Admin', '$2y$10$mOMd0xz3BTBmt1.RRQWpzOwzFyWQl4CkBzbmcs4jDLjsFnGps.Ni2', '123.123.123-12', '(49) 99840-6066', 'admin@gmail.com', 'professor');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
