@@ -4,7 +4,7 @@ class db {
 
     private $host = "localhost";
     private $user = "root";
-    private $password = "949464";
+    private $password = "";
     private $port = "3306";
     private $dbname ="bancotrabalhopweb1";
     private $table_name;

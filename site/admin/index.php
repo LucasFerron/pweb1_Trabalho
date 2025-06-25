@@ -1,5 +1,12 @@
 <?php
 session_start();
+
+// Se já estiver logado, redireciona direto para o painel
+if (isset($_SESSION['usuario_id'])) {
+    header("Location: dashboard.php");
+    exit();
+}
+
 include "./db.class.php";
 
 $db = new db('usuario');
@@ -33,7 +40,7 @@ if (!empty($_POST)) {
         
         if (password_verify($senha, $usuario->senha)) {
             $_SESSION['usuario_id'] = $usuario->id;
-            header("Location: ./index.php");
+            header("Location: dashboard.php");
             exit();
         } else {
             $errors[] = "Senha incorreta.";
@@ -96,7 +103,7 @@ if (!empty($_POST)) {
                         <i class="bi bi-person-lock fs-1 text-primary"></i>
                     </div>
 
-                    <form action="dashboard.php" method="post">
+                    <form action="index.php" method="post">
                         <input type="hidden" name="id" value="<?= $data->id ?? '' ?>">
 
                         <div class="mb-3">
