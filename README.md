@@ -1,6 +1,6 @@
 # GymFlow - Sistema de Gerenciamento de Treinos para Academias
 
-Este repositório contém o projeto **GymFlow**, desenvolvido como parte do curso **Técnico em Desenvolvimento de Sistemas**. O objetivo é criar um sistema completo para gerenciamento de treinos em academias, aplicando conceitos de **CRUD**, **autenticação**, **programação orientada a objetos** e **gestão de banco de dados MySQL**.
+Este repositório contém o projeto de estudo do curso Técnico em Desenvolvimento de Sistemas, cujo objetivo geral é desenvolver um sistema web utilizando PHP (PDO e Programação Orientada a Objetos) com banco de dados MySQL (via Laragon), aplicando os conceitos de CRUD, autenticação, organização de código e layout profissional. Além disso, este projeto visa praticar fluxos de versionamento e colaboração usando Git e GitHub.
 
 ---
 
